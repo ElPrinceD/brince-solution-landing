@@ -43,7 +43,7 @@ export const StatisticCounter = ({ value, suffix = '+', label, delay = 0 }: Stat
       transition={{ delay, duration: 0.5 }}
       className="text-center"
     >
-      <div className="text-4xl md:text-6xl font-bold text-primary-500 dark:text-primary-400 mb-2">
+      <div className="text-4xl md:text-6xl font-bold text-white mb-2">
         {count}{suffix}
       </div>
       <div className="text-gray-600 dark:text-gray-300 font-medium">{label}</div>
