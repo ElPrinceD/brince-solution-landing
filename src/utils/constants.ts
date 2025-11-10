@@ -1,6 +1,6 @@
 export const companyInfo = {
   name: 'Brince Solutions',
-  fullName: 'Brince Training and Recruitment LTD',
+  fullName: 'Brince Solutions Ltd',
   tagline: 'Your Solution Specialist',
   email: 'info@brincesolutions.com',
   phone: ['02034111756', '0790 424 4005', '02034111715'],

@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CookieBanner } from './components/CookieBanner';
+import { LeadGenPopup } from './components/LeadGenPopup';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Services } from './pages/Services';
@@ -28,6 +29,7 @@ function App() {
           </main>
           <Footer />
           <CookieBanner />
+          <LeadGenPopup />
         </div>
       </Router>
     </ThemeProvider>
