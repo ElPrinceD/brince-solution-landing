@@ -5,7 +5,8 @@ import { ServiceCard } from '../components/ServiceCard';
 import { StatisticCounter } from '../components/StatisticCounter';
 import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
-import { services, testimonials, newsPosts, aiConference, brightHRPartnership } from '../utils/constants';
+import { AppointmentCard } from '../components/AppointmentCard';
+import { services, testimonials, newsPosts, aiConference, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
   return (
@@ -51,6 +52,66 @@ export const Home = () => {
                 className="rounded-2xl shadow-2xl"
                 loading="lazy"
               />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Lead Generation Ad */}
+      <section className="py-20 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: '60px 60px'
+          }}></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <div className="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full text-sm font-semibold mb-6">
+              🚀 Transform Your Business Today
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              Ready to Grow Your Business?
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-100 mb-8 leading-relaxed">
+              Get expert consultation, strategic guidance, and proven solutions that drive results. 
+              Join hundreds of successful businesses that trust Brince Solutions.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Link
+                to="/contact"
+                className="px-10 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105"
+              >
+                Get Started Free
+              </Link>
+              <Link
+                to="/services"
+                className="px-10 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm"
+              >
+                Explore Services
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <div className="text-4xl mb-3">✓</div>
+                <h3 className="text-xl font-bold mb-2">Free Consultation</h3>
+                <p className="text-gray-200">Start with a no-obligation consultation</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <div className="text-4xl mb-3">⚡</div>
+                <h3 className="text-xl font-bold mb-2">Quick Results</h3>
+                <p className="text-gray-200">See measurable improvements fast</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <div className="text-4xl mb-3">💼</div>
+                <h3 className="text-xl font-bold mb-2">Expert Team</h3>
+                <p className="text-gray-200">10+ years of proven expertise</p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -144,6 +205,50 @@ export const Home = () => {
             <StatisticCounter value={50} suffix="+" label="Projects Delivered" />
             <StatisticCounter value={100} suffix="+" label="Happy Clients" />
             <StatisticCounter value={25} suffix="+" label="Team Members" />
+          </div>
+        </div>
+      </section>
+
+      {/* Online Appointments and Master Class */}
+      <section className="py-20 bg-gray-50 dark:bg-navy-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Online Appointments and Master Class
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
+              (GMT+00:00) Edinburgh, London
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <span className="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-lg font-semibold">
+                All Services
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                Business consultancy
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                Ai Business Conference
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                General Consultation
+              </span>
+            </div>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {appointments.map((appointment, index) => (
+              <AppointmentCard
+                key={appointment.id}
+                title={appointment.title}
+                duration={appointment.duration}
+                price={appointment.price}
+                delay={index * 0.1}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -89,7 +89,7 @@ export const ContactForm = () => {
       </button>
 
       {/* Error Display */}
-      {state.errors && state.errors.length > 0 && (
+      {state.errors && Object.keys(state.errors).length > 0 && (
         <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-500 rounded-xl p-4">
           <p className="text-red-700 dark:text-red-400 text-sm font-medium">
             There was an error submitting the form. Please try again or contact us directly.
