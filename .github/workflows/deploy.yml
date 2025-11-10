@@ -32,10 +32,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check for custom domain
+        id: check_cname
+        run: |
+          if [ -f "public/CNAME" ]; then
+            echo "has_custom_domain=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_custom_domain=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build
         run: npm run build:gh-pages
         env:
           GITHUB_PAGES: true
+          CUSTOM_DOMAIN: ${{ steps.check_cname.outputs.has_custom_domain }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

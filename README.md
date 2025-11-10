@@ -100,6 +100,52 @@ This project is configured for automatic deployment to GitHub Pages using GitHub
 - The deployment workflow runs automatically on every push to the main branch
 - Your site will be available at: `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
 
+### Custom Domain Setup
+
+This project is configured to support custom domains. The CNAME file is automatically included in deployments.
+
+1. **Update the CNAME file:**
+   - Edit `public/CNAME` and replace `brincesolutions.com` with your domain name
+   - For example: `www.brincesolutions.com` or `brincesolutions.com`
+   - Only include ONE domain per line (no `www` prefix if you want the apex domain)
+
+2. **Configure DNS Records:**
+   
+   **For Apex Domain (brincesolutions.com):**
+   - Add A records pointing to GitHub Pages IPs:
+     ```
+     185.199.108.153
+     185.199.109.153
+     185.199.110.153
+     185.199.111.153
+     ```
+   
+   **For Subdomain (www.brincesolutions.com):**
+   - Add a CNAME record:
+     ```
+     www.brincesolutions.com → YOUR_USERNAME.github.io
+     ```
+   
+   **OR use both (recommended):**
+   - Apex domain: A records (as above)
+   - www subdomain: CNAME to `YOUR_USERNAME.github.io`
+
+3. **Enable Custom Domain in GitHub:**
+   - Go to your repository → **Settings** → **Pages**
+   - Under **Custom domain**, enter your domain (e.g., `brincesolutions.com`)
+   - Check **Enforce HTTPS** (recommended)
+   - GitHub will automatically verify the domain
+
+4. **Wait for DNS Propagation:**
+   - DNS changes can take 24-48 hours to propagate
+   - You can check DNS propagation using tools like [whatsmydns.net](https://www.whatsmydns.net)
+
+5. **Verify SSL Certificate:**
+   - GitHub automatically provisions SSL certificates for custom domains
+   - This may take a few minutes to a few hours after DNS is configured
+
+**Note:** The build process automatically detects the CNAME file and uses the correct base path (`/` for custom domains vs `/brince-solution-landing/` for GitHub Pages subdomain).
+
 ## Project Structure
 
 ```
