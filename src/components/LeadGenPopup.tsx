@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { BusinessQuestionnaireForm } from './BusinessQuestionnaireForm';
 
 export const LeadGenPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,10 +24,9 @@ export const LeadGenPopup = () => {
     setIsVisible(false);
   };
 
-  const handleGetStarted = () => {
+  const handleFormSuccess = () => {
     localStorage.setItem('leadGenPopupSeen', 'true');
     setIsVisible(false);
-    // Navigation will happen via Link component
   };
 
   return (
@@ -51,7 +50,7 @@ export const LeadGenPopup = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="pointer-events-auto w-full max-w-4xl relative">
+            <div className="pointer-events-auto w-full max-w-5xl relative">
               {/* Close Button */}
               <button
                 onClick={handleClose}
@@ -73,91 +72,27 @@ export const LeadGenPopup = () => {
                   }}></div>
                 </div>
 
-                <div className="relative z-10 p-8 md:p-12">
+                <div className="relative z-10 p-6 md:p-10">
+                  {/* Header */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-center max-w-3xl mx-auto"
+                    className="text-center mb-8"
                   >
-                    {/* Badge */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 }}
-                      className="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full text-sm font-semibold mb-6"
-                    >
-                      🚀 Welcome to Brince Solutions
-                    </motion.div>
-
-                    {/* Headline */}
-                    <motion.h2
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                      className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-                    >
-                      Ready to Grow Your Business?
-                    </motion.h2>
-
-                    {/* Description */}
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
-                      className="text-xl md:text-2xl text-gray-100 mb-8 leading-relaxed"
-                    >
-                      Get expert consultation, strategic guidance, and proven solutions that drive results. 
-                      Join hundreds of successful businesses that trust Brince Solutions.
-                    </motion.p>
-
-                    {/* CTA Buttons */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                      className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
-                    >
-                      <Link
-                        to="/contact"
-                        onClick={handleGetStarted}
-                        className="px-10 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105 w-full sm:w-auto text-center"
-                      >
-                        Get Started Free
-                      </Link>
-                      <Link
-                        to="/services"
-                        onClick={handleClose}
-                        className="px-10 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm w-full sm:w-auto text-center"
-                      >
-                        Explore Services
-                      </Link>
-                    </motion.div>
-
-                    {/* Benefits */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7 }}
-                      className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
-                    >
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all">
-                        <div className="text-4xl mb-3">✓</div>
-                        <h3 className="text-xl font-bold mb-2">Free Consultation</h3>
-                        <p className="text-gray-200 text-sm">Start with a no-obligation consultation</p>
-                      </div>
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all">
-                        <div className="text-4xl mb-3">⚡</div>
-                        <h3 className="text-xl font-bold mb-2">Quick Results</h3>
-                        <p className="text-gray-200 text-sm">See measurable improvements fast</p>
-                      </div>
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all">
-                        <div className="text-4xl mb-3">💼</div>
-                        <h3 className="text-xl font-bold mb-2">Expert Team</h3>
-                        <p className="text-gray-200 text-sm">10+ years of proven expertise</p>
-                      </div>
-                    </motion.div>
+                    <div className="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full text-sm font-semibold mb-4">
+                      📋 CLIENT BUSINESS INFORMATION QUESTIONNAIRE
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                      Tell Us About Your Business
+                    </h2>
+                    <p className="text-lg text-gray-100">
+                      Help us understand your needs so we can provide the best solution
+                    </p>
                   </motion.div>
+
+                  {/* Form */}
+                  <BusinessQuestionnaireForm onSuccess={handleFormSuccess} />
                 </div>
               </div>
             </div>
