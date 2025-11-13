@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 
 interface TestimonialCardProps {
   name: string;
-  role: string;
-  company: string;
+  role?: string;
+  company?: string;
   rating: number;
   text: string;
   delay?: number;
@@ -26,9 +26,11 @@ export const TestimonialCard = ({ name, role, company, rating, text, delay = 0 }
       <p className="text-gray-700 dark:text-gray-300 mb-4 italic">"{text}"</p>
       <div>
         <div className="font-semibold text-gray-900 dark:text-white">{name}</div>
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          {role}, {company}
-        </div>
+        {(role || company) && (
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            {[role, company].filter(Boolean).join(', ')}
+          </div>
+        )}
       </div>
     </motion.div>
   );

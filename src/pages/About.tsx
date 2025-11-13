@@ -86,7 +86,7 @@ export const About = () => {
                   "{testimonial.text}"
                 </p>
                 <div className="text-gray-600 dark:text-gray-400">
-                  — {testimonial.name}, {testimonial.role}, {testimonial.company}
+                  — {testimonial.name}{testimonial.role || testimonial.company ? `, ${[testimonial.role, testimonial.company].filter(Boolean).join(', ')}` : ''}
                 </div>
               </motion.div>
             ))}
