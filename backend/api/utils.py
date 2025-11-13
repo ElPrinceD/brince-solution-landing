@@ -92,24 +92,54 @@ def send_booking_confirmation_email(lead, appointment_details=None, payment_deta
     admin_message = f"""
 New Booking Received
 
-Customer Information:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CUSTOMER INFORMATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Name: {lead.contact_person}
+- Position: {lead.position or "Not provided"}
 - Email: {lead.email}
 - Phone: {lead.phone or "Not provided"}
+- Business Name: {lead.business_name or "Not provided"}
+- Business Address: {lead.business_address or "Not provided"}
 
-Appointment Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+APPOINTMENT DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Service: {appointment_details.get("title", "N/A") if appointment_details else "N/A"}
 - Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
 - Price: {appointment_details.get("price", "N/A") if appointment_details else "N/A"}
 
-Payment Information:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PAYMENT INFORMATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {f"- Payment Status: {payment_details.get('status', 'N/A')}" if payment_details else "- Payment: Not applicable"}
 {f"- Payment ID: {payment_details.get('payment_id', 'N/A')}" if payment_details and payment_details.get('payment_id') else ""}
 
-Additional Information:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUSINESS INFORMATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Industry: {lead.industry or "Not provided"}
+- Nature of Business: {lead.nature_of_business or "Not provided"}
+- Business Structure: {lead.business_structure or "Not provided"}
+- Years in Operation: {lead.years_operation or "Not provided"}
+- Number of Employees: {lead.employees or "Not provided"}
+- Locations: {lead.locations or "Not provided"}
+- Services Seeking: {lead.services_seeking or "Not provided"}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ADDITIONAL INFORMATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {lead.additional_info or "None provided"}
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Booking created at: {lead.created_at}
+Lead ID: {lead.id}
 """
     
     # Email to customer
