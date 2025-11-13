@@ -40,12 +40,16 @@ def submit_lead(request):
             if is_booking:
                 # Extract appointment details from lead data
                 appointment_title = lead.services_seeking or 'Appointment'
-                appointment_duration = lead.additional_info.replace('Appointment booking - ', '') if 'Appointment booking' in lead.additional_info else 'N/A'
-                appointment_price = 'Free' if 'Free' in lead.short_term_goals else 'N/A'
+                # Extract duration and price from additional_info (format: "Appointment booking - 30 mins - Free")
+                appointment_duration = 'N/A'
+                appointment_price = 'N/A'
+                if 'Appointment booking' in lead.additional_info:
+                    parts = lead.additional_info.replace('Appointment booking - ', '').split(' - ')
+                    appointment_duration = parts[0] if len(parts) > 0 else 'N/A'
+                    appointment_price = parts[1] if len(parts) > 1 else 'N/A'
                 
-                # Only send confirmation emails for FREE bookings immediately
-                # For paid bookings, emails will be sent after payment is successful via webhook
-                is_free_booking = 'Free' in lead.short_term_goals or appointment_price == 'Free'
+                # Check if it's a free booking - check both short_term_goals and additional_info
+                is_free_booking = 'Free' in lead.short_term_goals or 'Free' in lead.additional_info or appointment_price == 'Free'
                 
                 if is_free_booking:
                     appointment_details = {

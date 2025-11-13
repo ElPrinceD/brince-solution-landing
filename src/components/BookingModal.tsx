@@ -34,6 +34,8 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
 
     try {
       // Submit lead information first
+      // Include price in shortTermGoals so backend can detect free bookings
+      const priceInfo = isFree ? 'Free' : appointment.price;
       await submitLead({
         contactPerson: customerInfo.name,
         email: customerInfo.email,
@@ -50,11 +52,11 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
         businessStructure: 'Not specified',
         employees: 'Not specified',
         locations: 'Not specified',
-        shortTermGoals: `Booking: ${appointment.title}`,
+        shortTermGoals: `Booking: ${appointment.title} - ${priceInfo}`,
         longTermGoals: 'Not specified',
         challenges: 'Not specified',
         servicesSeeking: appointment.title,
-        additionalInfo: `Appointment booking - ${appointment.duration}`,
+        additionalInfo: `Appointment booking - ${appointment.duration} - ${priceInfo}`,
       });
 
       if (isFree) {
