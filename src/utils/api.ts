@@ -1,5 +1,5 @@
 // API utility functions
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? 'https://brincesolutions.com/api' : 'http://localhost:8000/api');
 
 export interface LeadSubmissionData {
   // Basic Information
@@ -48,8 +48,16 @@ export const submitLead = async (data: LeadSubmissionData) => {
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.errors || 'Failed to submit lead');
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const error = await response.json();
+      throw new Error(error.errors || error.error || 'Failed to submit lead');
+    } else {
+      // If not JSON, it's likely an HTML error page
+      const text = await response.text();
+      throw new Error(`Server error (${response.status}): ${response.statusText}`);
+    }
   }
 
   return response.json();

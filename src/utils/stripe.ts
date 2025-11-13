@@ -1,6 +1,6 @@
 // Stripe configuration
 export const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? 'https://brincesolutions.com/api' : 'http://localhost:8000/api');
 
 export interface CreatePaymentIntentData {
   amount: number;
@@ -22,8 +22,15 @@ export const createPaymentIntent = async (data: CreatePaymentIntentData) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      } else {
+        // If not JSON, it's likely an HTML error page
+        throw new Error(`Server error (${response.status}): ${response.statusText}`);
+      }
     }
 
     return await response.json();
