@@ -6,6 +6,7 @@ import { StatisticCounter } from '../components/StatisticCounter';
 import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
 import { LeadGenForm } from '../components/LeadGenForm';
+import { AppointmentCard } from '../components/AppointmentCard';
 import { services, testimonials, newsPosts, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
