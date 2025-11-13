@@ -23,6 +23,7 @@ export const Navbar = () => {
     { path: '/brighthr', label: 'BRIGHTHR' },
     { path: '/services', label: 'Our Services' },
     { path: '/about', label: 'About Us' },
+    { path: '/departments', label: 'Departments' },
     { path: '/contact', label: 'Contact Us' },
   ];
 

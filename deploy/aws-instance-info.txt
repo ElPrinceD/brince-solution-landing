@@ -1,0 +1,13 @@
+Instance ID: i-010617380d93ee32f
+Public IP: 44.200.190.222
+Elastic IP: 98.94.179.168
+Key Pair: brince-solutions-key
+Security Group: sg-00c7afdfe66af87cb
+Region: us-east-1
+
+SSH Command:
+ssh -i brince-solutions-key.pem ubuntu@98.94.179.168
+
+Next Steps:
+1. Update DNS A record for brincesolutions.com to point to: 98.94.179.168
+2. Run: ./deploy-to-aws.sh 98.94.179.168

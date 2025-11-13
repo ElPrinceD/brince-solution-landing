@@ -10,6 +10,7 @@ import { Services } from './pages/Services';
 import { Contact } from './pages/Contact';
 import { News } from './pages/News';
 import { BrightHR } from './pages/BrightHR';
+import { Departments } from './pages/Departments';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/news" element={<News />} />
               <Route path="/brighthr" element={<BrightHR />} />
+              <Route path="/departments" element={<Departments />} />
             </Routes>
           </main>
           <Footer />

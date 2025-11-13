@@ -203,6 +203,7 @@ export const Services = () => {
             {appointments.map((appointment, index) => (
               <AppointmentCard
                 key={appointment.id}
+                id={appointment.id}
                 title={appointment.title}
                 duration={appointment.duration}
                 price={appointment.price}

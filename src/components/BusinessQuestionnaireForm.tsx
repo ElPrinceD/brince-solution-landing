@@ -1,14 +1,73 @@
-import { useForm, ValidationError } from '@formspree/react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { submitLead, type LeadSubmissionData } from '../utils/api';
 
 interface BusinessQuestionnaireFormProps {
   onSuccess?: () => void;
 }
 
 export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFormProps) => {
-  const [state, handleSubmit] = useForm('xanawgzj');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  if (state.succeeded) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const data: LeadSubmissionData = {
+      businessName: formData.get('businessName') as string || '',
+      contactPerson: formData.get('contactPerson') as string,
+      position: formData.get('position') as string || '',
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string || '',
+      businessAddress: formData.get('businessAddress') as string || '',
+      natureOfBusiness: formData.get('natureOfBusiness') as string || '',
+      businessActivities: formData.get('businessActivities') as string || '',
+      industry: formData.get('industry') as string || '',
+      productsServices: formData.get('productsServices') as string || '',
+      targetMarket: formData.get('targetMarket') as string || '',
+      yearsOperation: formData.get('yearsOperation') as string,
+      businessStructure: formData.get('businessStructure') as string,
+      employees: formData.get('employees') as string,
+      locations: formData.get('locations') as string,
+      shortTermGoals: formData.get('shortTermGoals') as string,
+      longTermGoals: formData.get('longTermGoals') as string,
+      challenges: formData.get('challenges') as string,
+      servicesSeeking: formData.get('servicesSeeking') as string,
+      additionalInfo: formData.get('additionalInfo') as string,
+      companySize: formData.get('companySize') as string || '',
+      annualRevenue: formData.get('annualRevenue') as string || '',
+      preferredContactMethod: formData.get('preferredContactMethod') as string || '',
+      urgencyLevel: formData.get('urgencyLevel') as string || '',
+      budgetRange: formData.get('budgetRange') as string || '',
+    };
+
+    try {
+      await submitLead(data);
+      setSubmitSuccess(true);
+      if (onSuccess) {
+        setTimeout(() => onSuccess(), 2000);
+      }
+    } catch (error: any) {
+      if (error.message) {
+        try {
+          const errorData = JSON.parse(error.message);
+          setErrors(errorData);
+        } catch {
+          setErrors({ general: [error.message] });
+        }
+      } else {
+        setErrors({ general: ['Failed to submit form. Please try again.'] });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (submitSuccess) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -38,9 +97,15 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-h-[70vh] overflow-y-auto px-2">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 flex-1 flex flex-col min-h-0">
       {/* Scrollable form container */}
-      <div className="space-y-6 pr-2">
+      <div className="space-y-4 sm:space-y-6 pr-1 sm:pr-2 overflow-y-auto flex-1 -mr-1 sm:-mr-2">
+        {/* General Errors */}
+        {errors.general && (
+          <div className="bg-red-500/20 border-2 border-red-300 rounded-xl p-4">
+            <p className="text-red-100 text-sm font-medium">{errors.general[0]}</p>
+          </div>
+        )}
         {/* Business Name */}
         <div>
           <label htmlFor="businessName" className="block text-sm font-semibold text-white mb-2">
@@ -68,7 +133,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all"
             placeholder="Full name"
           />
-          <ValidationError prefix="Contact Person" field="contactPerson" errors={state.errors} />
+          {errors.contactPerson && <p className="text-red-300 text-xs mt-1">{errors.contactPerson[0]}</p>}
         </div>
 
         {/* Position/Title */}
@@ -98,7 +163,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all"
             placeholder="your.email@example.com"
           />
-          <ValidationError prefix="Email" field="email" errors={state.errors} />
+          {errors.email && <p className="text-red-300 text-xs mt-1">{errors.email[0]}</p>}
         </div>
 
         {/* Phone Number */}
@@ -212,7 +277,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all"
             placeholder="e.g., 2 years, 5 years, Startup"
           />
-          <ValidationError prefix="Years Operation" field="yearsOperation" errors={state.errors} />
+          {errors.yearsOperation && <p className="text-red-300 text-xs mt-1">{errors.yearsOperation[0]}</p>}
         </div>
 
         {/* Business Structure */}
@@ -233,7 +298,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             <option value="Corporation" className="bg-primary-700">Corporation</option>
             <option value="Other" className="bg-primary-700">Other</option>
           </select>
-          <ValidationError prefix="Business Structure" field="businessStructure" errors={state.errors} />
+          {errors.businessStructure && <p className="text-red-300 text-xs mt-1">{errors.businessStructure[0]}</p>}
         </div>
 
         {/* Number of Employees */}
@@ -249,7 +314,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all"
             placeholder="e.g., 1-5, 10-20, 50+"
           />
-          <ValidationError prefix="Employees" field="employees" errors={state.errors} />
+          {errors.employees && <p className="text-red-300 text-xs mt-1">{errors.employees[0]}</p>}
         </div>
 
         {/* Business Locations */}
@@ -265,7 +330,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="List your business locations..."
           />
-          <ValidationError prefix="Locations" field="locations" errors={state.errors} />
+          {errors.locations && <p className="text-red-300 text-xs mt-1">{errors.locations[0]}</p>}
         </div>
 
         {/* Short-term Goals */}
@@ -281,7 +346,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="Describe your goals for the next 12 months..."
           />
-          <ValidationError prefix="Short Term Goals" field="shortTermGoals" errors={state.errors} />
+          {errors.shortTermGoals && <p className="text-red-300 text-xs mt-1">{errors.shortTermGoals[0]}</p>}
         </div>
 
         {/* Long-term Goals */}
@@ -297,7 +362,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="Describe your goals for the next 3-5 years..."
           />
-          <ValidationError prefix="Long Term Goals" field="longTermGoals" errors={state.errors} />
+          {errors.longTermGoals && <p className="text-red-300 text-xs mt-1">{errors.longTermGoals[0]}</p>}
         </div>
 
         {/* Current Challenges */}
@@ -313,7 +378,7 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="Describe the challenges you're facing..."
           />
-          <ValidationError prefix="Challenges" field="challenges" errors={state.errors} />
+          {errors.challenges && <p className="text-red-300 text-xs mt-1">{errors.challenges[0]}</p>}
         </div>
 
         {/* Services Seeking */}
@@ -329,7 +394,107 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="Describe what services or support you need..."
           />
-          <ValidationError prefix="Services Seeking" field="servicesSeeking" errors={state.errors} />
+          {errors.servicesSeeking && <p className="text-red-300 text-xs mt-1">{errors.servicesSeeking[0]}</p>}
+        </div>
+
+        {/* Company Size */}
+        <div>
+          <label htmlFor="companySize" className="block text-sm font-semibold text-white mb-2">
+            Company Size
+          </label>
+          <select
+            id="companySize"
+            name="companySize"
+            className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-white focus:border-white transition-all"
+          >
+            <option value="" className="bg-primary-700">Select company size</option>
+            <option value="1-5 employees" className="bg-primary-700">1-5 employees</option>
+            <option value="6-20 employees" className="bg-primary-700">6-20 employees</option>
+            <option value="21-50 employees" className="bg-primary-700">21-50 employees</option>
+            <option value="51-200 employees" className="bg-primary-700">51-200 employees</option>
+            <option value="201-500 employees" className="bg-primary-700">201-500 employees</option>
+            <option value="500+ employees" className="bg-primary-700">500+ employees</option>
+          </select>
+        </div>
+
+        {/* Annual Revenue Range */}
+        <div>
+          <label htmlFor="annualRevenue" className="block text-sm font-semibold text-white mb-2">
+            Annual Revenue Range
+          </label>
+          <select
+            id="annualRevenue"
+            name="annualRevenue"
+            className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-white focus:border-white transition-all"
+          >
+            <option value="" className="bg-primary-700">Select revenue range</option>
+            <option value="Under £50,000" className="bg-primary-700">Under £50,000</option>
+            <option value="£50,000 - £100,000" className="bg-primary-700">£50,000 - £100,000</option>
+            <option value="£100,000 - £250,000" className="bg-primary-700">£100,000 - £250,000</option>
+            <option value="£250,000 - £500,000" className="bg-primary-700">£250,000 - £500,000</option>
+            <option value="£500,000 - £1,000,000" className="bg-primary-700">£500,000 - £1,000,000</option>
+            <option value="£1,000,000+" className="bg-primary-700">£1,000,000+</option>
+            <option value="Prefer not to say" className="bg-primary-700">Prefer not to say</option>
+          </select>
+        </div>
+
+        {/* Preferred Contact Method */}
+        <div>
+          <label htmlFor="preferredContactMethod" className="block text-sm font-semibold text-white mb-2">
+            Preferred Contact Method
+          </label>
+          <select
+            id="preferredContactMethod"
+            name="preferredContactMethod"
+            className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-white focus:border-white transition-all"
+          >
+            <option value="" className="bg-primary-700">Select preferred method</option>
+            <option value="Email" className="bg-primary-700">Email</option>
+            <option value="Phone" className="bg-primary-700">Phone</option>
+            <option value="Video Call" className="bg-primary-700">Video Call</option>
+            <option value="In-Person Meeting" className="bg-primary-700">In-Person Meeting</option>
+            <option value="No Preference" className="bg-primary-700">No Preference</option>
+          </select>
+        </div>
+
+        {/* Urgency Level */}
+        <div>
+          <label htmlFor="urgencyLevel" className="block text-sm font-semibold text-white mb-2">
+            Urgency Level
+          </label>
+          <select
+            id="urgencyLevel"
+            name="urgencyLevel"
+            className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-white focus:border-white transition-all"
+          >
+            <option value="" className="bg-primary-700">Select urgency level</option>
+            <option value="Immediate (Within 1 week)" className="bg-primary-700">Immediate (Within 1 week)</option>
+            <option value="Urgent (Within 1 month)" className="bg-primary-700">Urgent (Within 1 month)</option>
+            <option value="Moderate (1-3 months)" className="bg-primary-700">Moderate (1-3 months)</option>
+            <option value="Planning (3-6 months)" className="bg-primary-700">Planning (3-6 months)</option>
+            <option value="Future Consideration (6+ months)" className="bg-primary-700">Future Consideration (6+ months)</option>
+          </select>
+        </div>
+
+        {/* Budget Range */}
+        <div>
+          <label htmlFor="budgetRange" className="block text-sm font-semibold text-white mb-2">
+            Budget Range for Services
+          </label>
+          <select
+            id="budgetRange"
+            name="budgetRange"
+            className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-white focus:border-white transition-all"
+          >
+            <option value="" className="bg-primary-700">Select budget range</option>
+            <option value="Under £1,000" className="bg-primary-700">Under £1,000</option>
+            <option value="£1,000 - £5,000" className="bg-primary-700">£1,000 - £5,000</option>
+            <option value="£5,000 - £10,000" className="bg-primary-700">£5,000 - £10,000</option>
+            <option value="£10,000 - £25,000" className="bg-primary-700">£10,000 - £25,000</option>
+            <option value="£25,000 - £50,000" className="bg-primary-700">£25,000 - £50,000</option>
+            <option value="£50,000+" className="bg-primary-700">£50,000+</option>
+            <option value="To be discussed" className="bg-primary-700">To be discussed</option>
+          </select>
         </div>
 
         {/* Additional Comments */}
@@ -345,25 +510,16 @@ export const BusinessQuestionnaireForm = ({ onSuccess }: BusinessQuestionnaireFo
             className="w-full px-4 py-3 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:border-white transition-all resize-none"
             placeholder="Any additional information..."
           />
-          <ValidationError prefix="Additional Info" field="additionalInfo" errors={state.errors} />
+          {errors.additionalInfo && <p className="text-red-300 text-xs mt-1">{errors.additionalInfo[0]}</p>}
         </div>
-
-        {/* Error Display */}
-        {state.errors && Object.keys(state.errors).length > 0 && (
-          <div className="bg-red-500/20 border-2 border-red-300 rounded-xl p-4">
-            <p className="text-red-100 text-sm font-medium">
-              Please check the form and try again.
-            </p>
-          </div>
-        )}
 
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={state.submitting}
-          className="w-full px-8 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-3xl transform hover:scale-105 disabled:transform-none"
+          disabled={isSubmitting}
+          className="w-full px-8 py-4 sm:py-5 bg-white text-primary-600 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 active:scale-95 sm:hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl hover:shadow-3xl disabled:transform-none touch-manipulation min-h-[56px] flex items-center justify-center"
         >
-          {state.submitting ? (
+          {isSubmitting ? (
             <span className="flex items-center justify-center">
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

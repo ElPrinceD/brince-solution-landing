@@ -1,10 +1,52 @@
-import { useForm, ValidationError } from '@formspree/react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { submitLead } from '../utils/api';
 
 export const ContactForm = () => {
-  const [state, handleSubmit] = useForm('xanawgzj');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  if (state.succeeded) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      contactPerson: formData.get('name') as string || formData.get('email') as string,
+      email: formData.get('email') as string,
+      additionalInfo: formData.get('message') as string || '',
+      yearsOperation: 'Not specified',
+      businessStructure: 'Not specified',
+      employees: 'Not specified',
+      locations: 'Not specified',
+      shortTermGoals: 'Not specified',
+      longTermGoals: 'Not specified',
+      challenges: 'Not specified',
+      servicesSeeking: 'General inquiry',
+    };
+
+    try {
+      await submitLead(data);
+      setSubmitSuccess(true);
+    } catch (error: any) {
+      if (error.message) {
+        try {
+          const errorData = JSON.parse(error.message);
+          setErrors(errorData);
+        } catch {
+          setErrors({ general: [error.message] });
+        }
+      } else {
+        setErrors({ general: ['Failed to submit form. Please try again.'] });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (submitSuccess) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -51,7 +93,7 @@ export const ContactForm = () => {
           className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
           placeholder="your.email@example.com"
         />
-        <ValidationError prefix="Email" field="email" errors={state.errors} />
+        {errors.email && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{errors.email[0]}</p>}
       </div>
 
       {/* Message Field */}
@@ -66,16 +108,16 @@ export const ContactForm = () => {
           className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all resize-none"
           placeholder="Tell us how we can help you..."
         />
-        <ValidationError prefix="Message" field="message" errors={state.errors} />
+        {errors.additionalInfo && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{errors.additionalInfo[0]}</p>}
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={state.submitting}
+        disabled={isSubmitting}
         className="w-full px-8 py-4 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
       >
-        {state.submitting ? (
+        {isSubmitting ? (
           <span className="flex items-center justify-center">
             <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -89,10 +131,10 @@ export const ContactForm = () => {
       </button>
 
       {/* Error Display */}
-      {state.errors && Object.keys(state.errors).length > 0 && (
+      {errors.general && (
         <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-500 rounded-xl p-4">
           <p className="text-red-700 dark:text-red-400 text-sm font-medium">
-            There was an error submitting the form. Please try again or contact us directly.
+            {errors.general[0]}
           </p>
         </div>
       )}

@@ -7,6 +7,33 @@ export const companyInfo = {
   address: '132 Lewisham High Street, Lewisham, London, SE13 6EE United Kingdom',
 };
 
+export const departments = [
+  {
+    id: 'marketing',
+    name: 'Marketing Department',
+    email: 'marketing@brincesolutions.com',
+    phone: '07769036462',
+    icon: '📢',
+    description: 'Our marketing team specializes in brand development, digital marketing strategies, content creation, and campaign management to help your business reach its target audience effectively.',
+  },
+  {
+    id: 'it',
+    name: 'IT Department',
+    email: 'it@brincesolutions.com',
+    phone: '07908690036',
+    icon: '💻',
+    description: 'Expert IT support and solutions including system maintenance, cybersecurity, cloud services, software development, and technical consulting to keep your business running smoothly.',
+  },
+  {
+    id: 'sales',
+    name: 'Sales Department',
+    email: 'sales@brincesolutions.com',
+    phone: '07904244005',
+    icon: '💼',
+    description: 'Our sales team is dedicated to understanding your business needs and providing tailored solutions. We help drive revenue growth through strategic sales planning and customer relationship management.',
+  },
+];
+
 export const services = [
   {
     id: 'it-support',

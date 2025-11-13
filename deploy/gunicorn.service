@@ -1,0 +1,26 @@
+[Unit]
+Description=Gunicorn daemon for Brince Solutions Django backend
+After=network.target
+
+[Service]
+User=brince
+Group=brince
+WorkingDirectory=/var/www/brince-backend/backend
+Environment="PATH=/var/www/brince-backend/venv/bin"
+# Try backend directory first, fallback to root
+ExecStartPre=/bin/bash -c 'if [ ! -d /var/www/brince-backend/backend ]; then cd /var/www/brince-backend && find . -name "manage.py" -type f | head -1 | xargs dirname | xargs -I {} ln -sf {} backend 2>/dev/null || true; fi'
+ExecStart=/var/www/brince-backend/venv/bin/gunicorn \
+    --workers 3 \
+    --bind 127.0.0.1:8000 \
+    --timeout 120 \
+    --access-logfile /var/log/brince/gunicorn-access.log \
+    --error-logfile /var/log/brince/gunicorn-error.log \
+    --log-level info \
+    brince_backend.wsgi:application
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+

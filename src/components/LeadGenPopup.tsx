@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BusinessQuestionnaireForm } from './BusinessQuestionnaireForm';
@@ -6,6 +6,8 @@ import { BusinessQuestionnaireForm } from './BusinessQuestionnaireForm';
 export const LeadGenPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef<number | null>(null);
 
   useEffect(() => {
     // Check if user has seen the popup before
@@ -40,6 +42,42 @@ export const LeadGenPopup = () => {
     setShowForm(false);
   };
 
+  // Swipe to close handler
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartY.current || !modalRef.current) return;
+    
+    const touchY = e.touches[0].clientY;
+    const diff = touchY - touchStartY.current;
+    
+    // Only allow downward swipe
+    if (diff > 0) {
+      modalRef.current.style.transform = `translateY(${Math.min(diff, 100)}px)`;
+      modalRef.current.style.opacity = `${Math.max(1 - diff / 200, 0.5)}`;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartY.current || !modalRef.current) return;
+    
+    const touchY = e.changedTouches[0].clientY;
+    const diff = touchY - touchStartY.current;
+    
+    // If swiped down more than 100px, close the modal
+    if (diff > 100) {
+      handleClose();
+    } else {
+      // Reset position
+      modalRef.current.style.transform = '';
+      modalRef.current.style.opacity = '';
+    }
+    
+    touchStartY.current = null;
+  };
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -59,13 +97,19 @@ export const LeadGenPopup = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-[101] flex items-center justify-center p-0 sm:p-4 pointer-events-none"
           >
-            <div className="pointer-events-auto w-full max-w-5xl relative">
-              {/* Close Button */}
+            <div
+              ref={modalRef}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              className="pointer-events-auto w-full h-full sm:h-auto sm:max-w-5xl sm:max-h-[90vh] relative flex flex-col"
+            >
+              {/* Close Button - Better positioned for mobile */}
               <button
                 onClick={handleClose}
-                className="absolute -top-4 -right-4 z-10 w-10 h-10 bg-white dark:bg-navy-900 rounded-full shadow-xl flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:scale-110 transition-all border-2 border-gray-200 dark:border-gray-700"
+                className="absolute top-2 right-2 sm:-top-4 sm:-right-4 z-20 w-12 h-12 sm:w-10 sm:h-10 bg-white dark:bg-navy-900 rounded-full shadow-xl flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 active:scale-95 sm:hover:scale-110 transition-all border-2 border-gray-200 dark:border-gray-700 touch-manipulation"
                 aria-label="Close popup"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,8 +117,11 @@ export const LeadGenPopup = () => {
                 </svg>
               </button>
 
+              {/* Swipe indicator for mobile */}
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gray-400 dark:bg-gray-600 rounded-full sm:hidden z-10"></div>
+
               {/* Modal Content */}
-              <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white rounded-3xl shadow-2xl overflow-hidden relative">
+              <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden relative flex-1 flex flex-col min-h-0">
                 {/* Pattern Background */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute inset-0" style={{
@@ -83,7 +130,7 @@ export const LeadGenPopup = () => {
                   }}></div>
                 </div>
 
-                <div className="relative z-10 p-8 md:p-12">
+                <div className="relative z-10 p-4 sm:p-8 md:p-12 flex-1 flex flex-col min-h-0 overflow-y-auto">
                   <AnimatePresence mode="wait">
                     {!showForm ? (
                       // Original Ad Content
@@ -99,9 +146,9 @@ export const LeadGenPopup = () => {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.3 }}
-                          className="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full text-sm font-semibold mb-6"
+                          className="inline-block bg-white/20 backdrop-blur-sm px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6"
                         >
-                          🚀 Welcome to Brince Solutions
+                          🚀 Lead Generation - Get Started Today
                         </motion.div>
 
                         {/* Headline */}
@@ -109,7 +156,7 @@ export const LeadGenPopup = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.4 }}
-                          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
                         >
                           Ready to Grow Your Business?
                         </motion.h2>
@@ -119,29 +166,29 @@ export const LeadGenPopup = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.5 }}
-                          className="text-xl md:text-2xl text-gray-100 mb-8 leading-relaxed"
+                          className="text-lg sm:text-xl md:text-2xl text-gray-100 mb-6 sm:mb-8 leading-relaxed"
                         >
                           Get expert consultation, strategic guidance, and proven solutions that drive results. 
                           Join hundreds of successful businesses that trust Brince Solutions.
                         </motion.p>
 
-                        {/* CTA Buttons */}
+                        {/* CTA Buttons - More prominent for lead generation */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.6 }}
-                          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+                          className="flex flex-col gap-4 justify-center items-center mb-8 sm:mb-12"
                         >
                           <button
                             onClick={handleGetStarted}
-                            className="px-10 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105 w-full sm:w-auto text-center"
+                            className="px-8 sm:px-10 py-4 sm:py-5 bg-white text-primary-600 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 active:scale-95 sm:hover:scale-105 transition-all shadow-2xl hover:shadow-3xl w-full sm:w-auto text-center touch-manipulation min-h-[56px] flex items-center justify-center"
                           >
-                            Get Started Free
+                            📋 Fill Out Lead Form - Get Started Free
                           </button>
                           <Link
                             to="/services"
                             onClick={handleClose}
-                            className="px-10 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm w-full sm:w-auto text-center"
+                            className="px-8 sm:px-10 py-3 sm:py-4 bg-transparent border-2 border-white text-white rounded-xl font-semibold text-base sm:text-lg hover:bg-white/10 active:scale-95 transition-all backdrop-blur-sm w-full sm:w-auto text-center touch-manipulation min-h-[48px] flex items-center justify-center"
                           >
                             Explore Services
                           </Link>
