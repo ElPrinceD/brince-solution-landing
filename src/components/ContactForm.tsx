@@ -16,6 +16,7 @@ export const ContactForm = () => {
     const data = {
       contactPerson: formData.get('name') as string || formData.get('email') as string,
       email: formData.get('email') as string,
+      phone: formData.get('phone') as string || '',
       additionalInfo: formData.get('message') as string || '',
       yearsOperation: 'Not specified',
       businessStructure: 'Not specified',
@@ -94,6 +95,20 @@ export const ContactForm = () => {
           placeholder="your.email@example.com"
         />
         {errors.email && <p className="text-red-600 dark:text-red-400 text-xs mt-1">{errors.email[0]}</p>}
+      </div>
+
+      {/* Phone Number Field */}
+      <div>
+        <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          Phone Number
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+          placeholder="+44 7911 123456"
+        />
       </div>
 
       {/* Message Field */}

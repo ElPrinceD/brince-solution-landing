@@ -135,12 +135,12 @@ Brince Solutions Team
 """
     
     try:
-        # Send to admin
+        # Send to admin and office
         send_mail(
             subject=admin_subject,
             message=admin_message,
             from_email=settings.EMAIL_HOST_USER,  # Use EMAIL_HOST_USER as from_email for Office365
-            recipient_list=['admin@brincesolutions.com'],
+            recipient_list=['admin@brincesolutions.com', 'office@brincesolutions.com'],
             fail_silently=False,
         )
         
