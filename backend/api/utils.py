@@ -38,11 +38,16 @@ Submitted at: {lead.created_at}
 """
     
     try:
+        # For lead generation inquiries, send to both sales and admin
+        recipients = ['admin@brincesolutions.com']
+        if 'Lead Generation' in lead.services_seeking or 'Lead Generation' in lead.short_term_goals:
+            recipients.append('sales@brincesolutions.com')
+        
         send_mail(
             subject=subject,
             message=message,
             from_email=settings.EMAIL_HOST_USER,  # Use EMAIL_HOST_USER as from_email for Office365
-            recipient_list=['admin@brincesolutions.com'],
+            recipient_list=recipients,
             fail_silently=False,
         )
         return True

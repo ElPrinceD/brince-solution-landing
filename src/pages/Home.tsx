@@ -5,7 +5,7 @@ import { ServiceCard } from '../components/ServiceCard';
 import { StatisticCounter } from '../components/StatisticCounter';
 import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
-import { AppointmentCard } from '../components/AppointmentCard';
+import { LeadGenForm } from '../components/LeadGenForm';
 import { services, testimonials, newsPosts, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
@@ -13,7 +13,7 @@ export const Home = () => {
     <div className="pt-20">
       <Hero />
 
-      {/* Lead Generation & Booking Section */}
+      {/* Lead Generation Section */}
       <section className="py-20 bg-gradient-to-r from-primary-500 to-primary-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -28,36 +28,29 @@ export const Home = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Ready to Grow Your Business?
             </h2>
-            <p className="text-lg md:text-xl text-gray-100 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-100 max-w-3xl mx-auto mb-8">
+              We specialize in setting up powerful lead generation systems for companies. 
               Get expert consultation, strategic guidance, and proven solutions that drive results. 
-              Book a consultation with us today and join hundreds of successful businesses that trust Brince Solutions.
+              Join hundreds of successful businesses that trust Brince Solutions for their lead generation needs.
             </p>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {appointments.map((appointment, index) => (
-              <AppointmentCard
-                key={appointment.id}
-                id={appointment.id}
-                title={appointment.title}
-                duration={appointment.duration}
-                price={appointment.price}
-                delay={index * 0.1}
-              />
-            ))}
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="mt-12 text-center"
-          >
-            <Link
-              to="/services"
-              className="inline-block px-8 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-gray-100 transition-all"
-            >
-              Explore All Services
-            </Link>
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="text-3xl mb-3">📈</div>
+                <h3 className="font-bold text-lg mb-2">Proven Results</h3>
+                <p className="text-sm text-gray-100">Increase your leads with our tested strategies</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="text-3xl mb-3">🎯</div>
+                <h3 className="font-bold text-lg mb-2">Targeted Approach</h3>
+                <p className="text-sm text-gray-100">Reach the right audience for your business</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="text-3xl mb-3">⚡</div>
+                <h3 className="font-bold text-lg mb-2">Quick Setup</h3>
+                <p className="text-sm text-gray-100">Get your lead generation system running fast</p>
+              </div>
+            </div>
+            <LeadGenForm />
           </motion.div>
         </div>
       </section>
