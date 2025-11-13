@@ -226,5 +226,8 @@ EMAIL_TIMEOUT = 10  # Connection timeout in seconds
 # Stripe Configuration
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
+
+# Google Places API (for fetching Google Reviews)
+GOOGLE_PLACES_API_KEY = os.getenv('GOOGLE_PLACES_API_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
 

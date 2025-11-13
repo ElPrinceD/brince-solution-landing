@@ -199,7 +199,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials / Google Reviews */}
       <section className="py-20 bg-white dark:bg-navy-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -211,6 +211,9 @@ export const Home = () => {
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               What Our Clients Say
             </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Real reviews from our Google Business profile
+            </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (

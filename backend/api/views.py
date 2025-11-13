@@ -6,6 +6,7 @@ from django.http import JsonResponse
 import stripe
 import json
 import logging
+import requests
 from django.conf import settings
 from .models import Lead, Payment
 from .serializers import LeadSerializer, PaymentSerializer
@@ -42,18 +43,25 @@ def submit_lead(request):
                 appointment_duration = lead.additional_info.replace('Appointment booking - ', '') if 'Appointment booking' in lead.additional_info else 'N/A'
                 appointment_price = 'Free' if 'Free' in lead.short_term_goals else 'N/A'
                 
-                appointment_details = {
-                    'title': appointment_title,
-                    'duration': appointment_duration,
-                    'price': appointment_price
-                }
+                # Only send confirmation emails for FREE bookings immediately
+                # For paid bookings, emails will be sent after payment is successful via webhook
+                is_free_booking = 'Free' in lead.short_term_goals or appointment_price == 'Free'
                 
-                # Send booking confirmation emails
-                try:
-                    send_booking_confirmation_email(lead, appointment_details)
-                    logger.info(f"Booking confirmation emails sent for lead ID={lead.id}")
-                except Exception as e:
-                    logger.error(f"Failed to send booking confirmation email for lead ID={lead.id}: {str(e)}")
+                if is_free_booking:
+                    appointment_details = {
+                        'title': appointment_title,
+                        'duration': appointment_duration,
+                        'price': appointment_price
+                    }
+                    
+                    # Send booking confirmation emails for free bookings
+                    try:
+                        send_booking_confirmation_email(lead, appointment_details)
+                        logger.info(f"Booking confirmation emails sent for free booking (lead ID={lead.id})")
+                    except Exception as e:
+                        logger.error(f"Failed to send booking confirmation email for lead ID={lead.id}: {str(e)}")
+                else:
+                    logger.info(f"Paid booking submitted (lead ID={lead.id}). Email will be sent after payment is successful.")
             else:
                 # Regular lead submission - send standard emails
                 try:
@@ -140,26 +148,10 @@ def create_payment_intent(request):
         
         logger.info(f"Payment intent created: ID={intent.id}, Payment ID={payment.id}")
         
-        # If there's a lead associated, send booking confirmation
+        # Don't send email here - wait for payment to succeed via webhook
+        # Email will be sent in the webhook handler when payment_intent.succeeded event is received
         if lead_id:
-            try:
-                lead = Lead.objects.get(id=lead_id)
-                # Extract appointment details from description
-                appointment_details = {
-                    'title': description.split(' - ')[0] if ' - ' in description else description,
-                    'duration': description.split(' - ')[1] if ' - ' in description else 'N/A',
-                    'price': f'£{amount / 100:.2f}'
-                }
-                payment_details = {
-                    'status': 'pending',
-                    'payment_id': payment.id
-                }
-                send_booking_confirmation_email(lead, appointment_details, payment_details)
-                logger.info(f"Booking confirmation email sent after payment intent creation for lead ID={lead_id}")
-            except Lead.DoesNotExist:
-                logger.warning(f"Lead ID={lead_id} not found when sending booking confirmation")
-            except Exception as e:
-                logger.error(f"Failed to send booking confirmation email: {str(e)}")
+            logger.info(f"Payment intent created for lead ID={lead_id}. Email will be sent after payment is successful.")
         
         return Response({
             'client_secret': intent.client_secret,
@@ -246,4 +238,60 @@ def stripe_webhook(request):
             logger.warning(f"Payment not found for intent: {payment_intent['id']}")
     
     return JsonResponse({'status': 'success'})
+
+
+@api_view(['GET'])
+def get_google_reviews(request):
+    """Fetch Google Reviews from Google Places API"""
+    place_id = request.GET.get('place_id')
+    api_key = request.GET.get('api_key') or getattr(settings, 'GOOGLE_PLACES_API_KEY', None)
+    
+    if not place_id:
+        return Response({
+            'error': 'place_id parameter is required'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not api_key:
+        return Response({
+            'error': 'Google Places API key is required. Set GOOGLE_PLACES_API_KEY in settings or pass api_key parameter.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # Fetch place details including reviews
+        url = f'https://maps.googleapis.com/maps/api/place/details/json'
+        params = {
+            'place_id': place_id,
+            'fields': 'name,rating,reviews,user_ratings_total',
+            'key': api_key
+        }
+        
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if data.get('status') != 'OK':
+            return Response({
+                'error': f"Google Places API error: {data.get('status')} - {data.get('error_message', 'Unknown error')}"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        place_data = data.get('result', {})
+        reviews = place_data.get('reviews', [])
+        
+        return Response({
+            'place_name': place_data.get('name', ''),
+            'rating': place_data.get('rating', 0),
+            'total_ratings': place_data.get('user_ratings_total', 0),
+            'reviews': reviews
+        }, status=status.HTTP_200_OK)
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching Google Reviews: {str(e)}")
+        return Response({
+            'error': 'Failed to fetch reviews from Google Places API'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        logger.error(f"Unexpected error fetching Google Reviews: {str(e)}", exc_info=True)
+        return Response({
+            'error': 'An unexpected error occurred'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

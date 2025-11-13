@@ -234,7 +234,23 @@ export const appointments = [
   },
 ];
 
+// Google Reviews / Testimonials
+// To add Google Reviews:
+// Option 1: Manually add reviews from your Google Business profile here
+// Option 2: Use the GoogleReviews component with your Google Place ID and API key
+// To get your Place ID: https://developers.google.com/maps/documentation/places/web-service/place-id
 export const testimonials = [
+  // Add your Google Reviews here manually, or use the GoogleReviews component
+  // Example format:
+  // {
+  //   id: 1,
+  //   name: 'Customer Name',
+  //   role: 'Position (optional)',
+  //   company: 'Company Name (optional)',
+  //   rating: 5,
+  //   text: 'Review text from Google...',
+  //   date: '2 weeks ago',
+  // },
   {
     id: 1,
     name: 'Sarah M.',
