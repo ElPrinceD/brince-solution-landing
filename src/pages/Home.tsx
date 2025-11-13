@@ -6,53 +6,58 @@ import { StatisticCounter } from '../components/StatisticCounter';
 import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
 import { AppointmentCard } from '../components/AppointmentCard';
-import { services, testimonials, newsPosts, aiConference, brightHRPartnership, appointments } from '../utils/constants';
+import { services, testimonials, newsPosts, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
   return (
     <div className="pt-20">
       <Hero />
 
-      {/* AI Conference Banner */}
+      {/* Lead Generation & Booking Section */}
       <section className="py-20 bg-gradient-to-r from-primary-500 to-primary-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid md:grid-cols-2 gap-12 items-center"
+            className="text-center mb-12"
           >
-            <div className="space-y-6">
-              <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-                AI Business Conference coming soon
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold">{aiConference.title}</h2>
-              <p className="text-lg text-gray-100">{aiConference.description}</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg">
-                  <div className="text-sm text-gray-200">Date</div>
-                  <div className="font-semibold">{aiConference.date}</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg">
-                  <div className="text-sm text-gray-200">Location</div>
-                  <div className="font-semibold">{aiConference.location}</div>
-                </div>
-              </div>
-              <Link
-                to="/contact"
-                className="inline-block px-8 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-gray-100 transition-all"
-              >
-                Learn more
-              </Link>
+            <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              🚀 Lead Generation & Business Solutions
             </div>
-            <div className="relative">
-              <img
-                src={aiConference.image}
-                alt="AI Conference"
-                className="rounded-2xl shadow-2xl"
-                loading="lazy"
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Ready to Grow Your Business?
+            </h2>
+            <p className="text-lg md:text-xl text-gray-100 max-w-3xl mx-auto">
+              Get expert consultation, strategic guidance, and proven solutions that drive results. 
+              Book a consultation with us today and join hundreds of successful businesses that trust Brince Solutions.
+            </p>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {appointments.map((appointment, index) => (
+              <AppointmentCard
+                key={appointment.id}
+                id={appointment.id}
+                title={appointment.title}
+                duration={appointment.duration}
+                price={appointment.price}
+                delay={index * 0.1}
               />
-            </div>
+            ))}
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-12 text-center"
+          >
+            <Link
+              to="/services"
+              className="inline-block px-8 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-gray-100 transition-all"
+            >
+              Explore All Services
+            </Link>
           </motion.div>
         </div>
       </section>

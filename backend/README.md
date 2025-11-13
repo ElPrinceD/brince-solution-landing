@@ -66,10 +66,27 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
 
 ## Email Configuration
 
-For Gmail:
-- Enable 2-factor authentication
-- Generate an App Password
-- Use the app password as `EMAIL_HOST_PASSWORD`
+The backend is configured to use GoDaddy SMTP by default.
+
+### GoDaddy SMTP Settings:
+- **SMTP Server**: `smtpout.secureserver.net`
+- **Port**: `587` (TLS - recommended) or `465` (SSL - alternative)
+- **TLS**: Enabled for port 587
+- **SSL**: Available for port 465 (if TLS doesn't work)
+
+### Environment Variables:
+Set the following in your `.env` file:
+```env
+EMAIL_HOST=smtpout.secureserver.net
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+EMAIL_HOST_USER=your-email@brincesolutions.com
+EMAIL_HOST_PASSWORD=your-email-password
+DEFAULT_FROM_EMAIL=it@brincesolutions.com
+```
+
+**Note**: Use your full GoDaddy email address and password for `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD`.
 
 For other providers, adjust `EMAIL_HOST` and `EMAIL_PORT` accordingly.
 

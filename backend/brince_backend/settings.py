@@ -208,18 +208,19 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
 
 # Email Configuration (SMTP)
-# Outlook.com SMTP settings
+# Outlook.com SMTP settings (default)
+# Can be overridden with GoDaddy by setting EMAIL_HOST=smtpout.secureserver.net in .env
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp-mail.outlook.com')  # Outlook.com SMTP
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_USE_SSL = False  # Outlook uses STARTTLS (TLS), not SSL
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp-mail.outlook.com')  # Outlook.com SMTP (default)
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))  # 587 for TLS (recommended)
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'  # Use TLS for port 587
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'  # Use SSL for port 465 (alternative)
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'it@brincesolutions.com')
 ADMIN_EMAIL = 'admin@brincesolutions.com'
 
-# Outlook specific settings
+# SMTP settings
 EMAIL_TIMEOUT = 10  # Connection timeout in seconds
 
 # Stripe Configuration
