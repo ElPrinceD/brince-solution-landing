@@ -1,0 +1,205 @@
+INFO 2025-11-12 22:55:05,903 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:55:12,286 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Business Setup Consultation', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Business Setup Consultation', 'additionalInfo': 'Appointment booking - 1 hr'}
+INFO 2025-11-12 22:55:12,292 views Lead created successfully: ID=1, Email=prince@rym.org.uk
+INFO 2025-11-12 22:55:12,302 views Notification email sent for lead ID=1
+INFO 2025-11-12 22:55:17,710 views Confirmation email sent for lead ID=1
+INFO 2025-11-12 22:55:17,712 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 22:55:17,728 basehttp "OPTIONS /api/payments/create-intent/ HTTP/1.1" 200 0
+INFO 2025-11-12 22:55:17,728 basehttp "OPTIONS /api/payments/create-intent/ HTTP/1.1" 200 0
+INFO 2025-11-12 22:55:17,729 views Received payment intent request: amount=100, email=prince@rym.org.uk
+INFO 2025-11-12 22:55:17,730 views Received payment intent request: amount=100, email=prince@rym.org.uk
+INFO 2025-11-12 22:55:17,777 _util message='Request to Stripe api' method=post path=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:55:17,778 _util message='Request to Stripe api' method=post path=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:55:18,216 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:55:18,217 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+ERROR 2025-11-12 22:55:18,221 views Error creating payment intent: 'NoneType' object has no attribute 'Secret'
+Traceback (most recent call last):
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py", line 84, in create_payment_intent
+    intent = stripe.PaymentIntent.create(
+        amount=amount,
+    ...<6 lines>...
+        }
+    )
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_payment_intent.py", line 8099, in create
+    cls._static_request(
+    ~~~~~~~~~~~~~~~~~~~^
+        "post",
+        ^^^^^^^
+    ...<5 lines>...
+        params,
+        ^^^^^^^
+    ),
+    ^
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_api_resource.py", line 160, in _static_request
+    return convert_to_stripe_object(
+        response, api_key, stripe_version, stripe_account, params
+    )
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_util.py", line 254, in convert_to_stripe_object
+    klass = get_object_classes().get(klass_name, StripeObject)
+            ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_util.py", line 190, in get_object_classes
+    from stripe._object_classes import OBJECT_CLASSES
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_object_classes.py", line 17, in <module>
+    stripe.apps.Secret.OBJECT_NAME: stripe.apps.Secret,
+    ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'Secret'
+ERROR 2025-11-12 22:55:18,222 views Error creating payment intent: 'NoneType' object has no attribute 'Secret'
+Traceback (most recent call last):
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py", line 84, in create_payment_intent
+    intent = stripe.PaymentIntent.create(
+        amount=amount,
+    ...<6 lines>...
+        }
+    )
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_payment_intent.py", line 8099, in create
+    cls._static_request(
+    ~~~~~~~~~~~~~~~~~~~^
+        "post",
+        ^^^^^^^
+    ...<5 lines>...
+        params,
+        ^^^^^^^
+    ),
+    ^
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_api_resource.py", line 160, in _static_request
+    return convert_to_stripe_object(
+        response, api_key, stripe_version, stripe_account, params
+    )
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_util.py", line 254, in convert_to_stripe_object
+    klass = get_object_classes().get(klass_name, StripeObject)
+            ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_util.py", line 190, in get_object_classes
+    from stripe._object_classes import OBJECT_CLASSES
+  File "/Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_object_classes.py", line 17, in <module>
+    stripe.apps.Secret.OBJECT_NAME: stripe.apps.Secret,
+    ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'Secret'
+ERROR 2025-11-12 22:55:18,229 log Internal Server Error: /api/payments/create-intent/
+ERROR 2025-11-12 22:55:18,228 log Internal Server Error: /api/payments/create-intent/
+ERROR 2025-11-12 22:55:18,229 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 500 55
+ERROR 2025-11-12 22:55:18,229 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 500 55
+INFO 2025-11-12 22:55:48,917 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 22:55:49,168 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:55:54,436 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 22:55:54,600 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:55:55,764 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/venv/lib/python3.14/site-packages/stripe/_capability.py changed, reloading.
+INFO 2025-11-12 22:55:55,980 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:56:03,274 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:56:03,668 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:56:11,353 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 22:56:11,521 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:56:56,596 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 22:57:07,932 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Business Setup Consultation', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Business Setup Consultation', 'additionalInfo': 'Appointment booking - 1 hr'}
+INFO 2025-11-12 22:57:07,937 views Lead created successfully: ID=2, Email=prince@rym.org.uk
+INFO 2025-11-12 22:57:07,940 views Notification email sent for lead ID=2
+INFO 2025-11-12 22:57:13,189 views Confirmation email sent for lead ID=2
+INFO 2025-11-12 22:57:13,191 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 22:57:13,200 views Received payment intent request: amount=100, email=prince@rym.org.uk
+INFO 2025-11-12 22:57:13,202 views Received payment intent request: amount=100, email=prince@rym.org.uk
+INFO 2025-11-12 22:57:13,233 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:57:13,233 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:57:13,597 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:57:13,598 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:57:13,607 views Payment intent created: ID=pi_3SSmyTHlmo3ECKx90UHLpqpN, Payment ID=1
+INFO 2025-11-12 22:57:13,608 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:57:13,609 views Payment intent created: ID=pi_3SSmyTHlmo3ECKx90ywMvF8z, Payment ID=2
+INFO 2025-11-12 22:57:13,610 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:57:47,340 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Marketing Enquiries', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Marketing Enquiries', 'additionalInfo': 'Appointment booking - 30 mins'}
+INFO 2025-11-12 22:57:47,344 views Lead created successfully: ID=3, Email=prince@rym.org.uk
+INFO 2025-11-12 22:57:47,344 views Notification email sent for lead ID=3
+INFO 2025-11-12 22:57:52,634 views Confirmation email sent for lead ID=3
+INFO 2025-11-12 22:57:52,635 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 22:58:21,372 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: General Consultation', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'General Consultation', 'additionalInfo': 'Appointment booking - 45 mins'}
+INFO 2025-11-12 22:58:21,376 views Lead created successfully: ID=4, Email=prince@rym.org.uk
+INFO 2025-11-12 22:58:21,376 views Notification email sent for lead ID=4
+INFO 2025-11-12 22:58:26,589 views Confirmation email sent for lead ID=4
+INFO 2025-11-12 22:58:26,590 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 22:58:26,598 views Received payment intent request: amount=70, email=prince@rym.org.uk
+INFO 2025-11-12 22:58:26,598 views Received payment intent request: amount=70, email=prince@rym.org.uk
+INFO 2025-11-12 22:58:26,599 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:58:26,599 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:58:26,900 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:58:26,900 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:58:26,906 views Payment intent created: ID=pi_3SSmzeHlmo3ECKx9132HoOmV, Payment ID=3
+INFO 2025-11-12 22:58:26,907 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:58:26,907 views Payment intent created: ID=pi_3SSmzeHlmo3ECKx91I5q9q0E, Payment ID=4
+INFO 2025-11-12 22:58:26,908 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:58:52,055 views Received payment intent request: amount=70, email=prince@rym.org.uk
+INFO 2025-11-12 22:58:52,056 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:58:52,339 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:58:52,342 views Payment intent created: ID=pi_3SSn04Hlmo3ECKx90SiWEkC2, Payment ID=5
+INFO 2025-11-12 22:58:52,342 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:59:01,493 views Received payment intent request: amount=70, email=prince@rym.org.uk
+INFO 2025-11-12 22:59:01,493 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:59:01,835 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:59:01,839 views Payment intent created: ID=pi_3SSn0DHlmo3ECKx9040gL2fi, Payment ID=6
+INFO 2025-11-12 22:59:01,840 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 22:59:27,951 views Received payment intent request: amount=70, email=prince@rym.org.uk
+INFO 2025-11-12 22:59:27,952 _util message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO 2025-11-12 22:59:28,197 _util message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO 2025-11-12 22:59:28,201 views Payment intent created: ID=pi_3SSn0eHlmo3ECKx90qeWmtFz, Payment ID=7
+INFO 2025-11-12 22:59:28,201 basehttp "POST /api/payments/create-intent/ HTTP/1.1" 201 95
+INFO 2025-11-12 23:29:48,558 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/utils.py changed, reloading.
+INFO 2025-11-12 23:29:48,861 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:30:01,208 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 23:30:01,433 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:30:06,622 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 23:30:06,785 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:30:10,926 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 23:30:11,086 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:30:14,223 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/views.py changed, reloading.
+INFO 2025-11-12 23:30:14,393 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:30:17,535 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:30:17,696 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:32:13,438 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:32:13,696 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:33:59,373 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Marketing Enquiries', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Marketing Enquiries', 'additionalInfo': 'Appointment booking - 30 mins'}
+INFO 2025-11-12 23:33:59,381 views Lead created successfully: ID=5, Email=prince@rym.org.uk
+INFO 2025-11-12 23:34:04,644 views Booking confirmation emails sent for lead ID=5
+INFO 2025-11-12 23:34:04,645 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 23:34:11,450 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:34:11,686 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:34:14,851 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:34:14,992 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:34:24,892 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Marketing Enquiries', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Marketing Enquiries', 'additionalInfo': 'Appointment booking - 30 mins'}
+INFO 2025-11-12 23:34:24,897 views Lead created successfully: ID=6, Email=prince@rym.org.uk
+INFO 2025-11-12 23:34:30,215 views Booking confirmation emails sent for lead ID=6
+INFO 2025-11-12 23:34:30,216 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 23:35:07,246 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:35:07,478 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:35:11,659 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/utils.py changed, reloading.
+INFO 2025-11-12 23:35:11,805 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:35:12,927 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/utils.py changed, reloading.
+INFO 2025-11-12 23:35:13,097 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:35:15,224 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/api/utils.py changed, reloading.
+INFO 2025-11-12 23:35:15,383 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:35:20,574 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:35:20,744 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:35:35,766 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Marketing Enquiries', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Marketing Enquiries', 'additionalInfo': 'Appointment booking - 30 mins'}
+INFO 2025-11-12 23:35:35,772 views Lead created successfully: ID=7, Email=prince@rym.org.uk
+INFO 2025-11-12 23:35:41,135 views Booking confirmation emails sent for lead ID=7
+INFO 2025-11-12 23:35:41,137 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 23:36:18,128 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:36:18,372 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:36:26,638 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:36:26,872 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:36:32,091 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:36:32,255 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:36:36,415 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:36:36,591 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:37:16,564 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:37:16,811 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:37:29,174 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:37:29,396 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:48:28,494 views Received lead submission request: {'contactPerson': 'Prince Yaw Asiedu', 'email': 'prince@rym.org.uk', 'phone': '02038610100', 'businessName': '', 'position': '', 'businessAddress': '', 'natureOfBusiness': '', 'businessActivities': '', 'industry': '', 'productsServices': '', 'targetMarket': '', 'yearsOperation': 'Not specified', 'businessStructure': 'Not specified', 'employees': 'Not specified', 'locations': 'Not specified', 'shortTermGoals': 'Booking: Marketing Enquiries', 'longTermGoals': 'Not specified', 'challenges': 'Not specified', 'servicesSeeking': 'Marketing Enquiries', 'additionalInfo': 'Appointment booking - 30 mins'}
+INFO 2025-11-12 23:48:28,503 views Lead created successfully: ID=8, Email=prince@rym.org.uk
+INFO 2025-11-12 23:48:34,001 views Booking confirmation emails sent for lead ID=8
+INFO 2025-11-12 23:48:34,002 basehttp "POST /api/leads/ HTTP/1.1" 201 68
+INFO 2025-11-12 23:59:04,950 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:59:05,179 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:59:19,531 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:59:19,760 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:59:29,012 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:59:29,165 autoreload Watching for file changes with StatReloader
+INFO 2025-11-12 23:59:44,502 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
+INFO 2025-11-12 23:59:44,929 autoreload Watching for file changes with StatReloader
