@@ -235,29 +235,91 @@ export const appointments = [
 ];
 
 // Google Reviews / Testimonials
-// To add Google Reviews:
-// Option 1: Manually add reviews from your Google Business profile here
-// Option 2: Use the GoogleReviews component with your Google Place ID and API key
-// To get your Place ID: https://developers.google.com/maps/documentation/places/web-service/place-id
+// Reviews from Google Business profile
 export const testimonials = [
-  // Add your Google Reviews here manually, or use the GoogleReviews component
-  // Example format:
-  // {
-  //   id: 1,
-  //   name: 'Customer Name',
-  //   role: 'Position (optional)',
-  //   company: 'Company Name (optional)',
-  //   rating: 5,
-  //   text: 'Review text from Google...',
-  //   date: '2 weeks ago',
-  // },
   {
     id: 1,
-    name: 'Sarah M.',
-    role: 'Managing Director',
-    company: 'Luxe Interiors',
+    name: 'Mark Ntim',
     rating: 5,
-    text: 'Brince Solutions transformed our brand presence with a creative marketing campaign that doubled our customer engagement in just three months. Their team understood our vision and delivered beyond expectations.',
+    text: 'I deeply recommend Brince Solutions Ltd to anyone who require information about setting up a company in the UK. If you require any general information regarding setting up a SME business in the UK, I recommend Abena from Brince Solutions Ltd to you.',
+    date: '3 weeks ago',
+  },
+  {
+    id: 2,
+    name: 'JESSICA',
+    rating: 5,
+    text: 'If you want to set up a business, then look no further than Brince Solutions Ltd. They are very patient and willing to address all your issues and help you with all your concerns.',
+    date: '3 days ago',
+  },
+  {
+    id: 3,
+    name: 'Mavis Adu-Twumwaa',
+    rating: 5,
+    text: 'I highly recommend BRINCE SOLUTION LTD. Their services are second to none. The team is friendly, and they make sure to assess the understanding level of their students and deliver the best service. They are professional. Am much grateful to BRINCE SOLUTION. THANK YOU',
+    date: '7 months ago',
+  },
+  {
+    id: 4,
+    name: 'YEBOAH SHARON',
+    rating: 5,
+    text: 'Brince solutions ltd is the best among the rest. Had a nice experience with them. The manager is so friendly and polite. When it comes to setting up a business please look no further than BRINCE SOLUTIONS LTD. Thank you',
+    date: '7 months ago',
+  },
+  {
+    id: 5,
+    name: 'firah Fati',
+    rating: 5,
+    text: 'Brince solutions is the best because they are professional and teach into details for better understanding of topics. I recommend Brince solutions to anyone who wants to work as a carer.',
+    date: '7 months ago',
+  },
+  {
+    id: 6,
+    name: 'Evans Ohene',
+    rating: 5,
+    text: 'I had great experience they very professional and helpful and will take the time to walk you through each step',
+    date: '7 months ago',
+  },
+  {
+    id: 7,
+    name: 'Queenscliff Mensah',
+    rating: 5,
+    text: 'Brince solution is very professional and ethical in their doings. I don\'t regret choosing you.',
+    date: '7 months ago',
+  },
+  {
+    id: 8,
+    name: 'Omobosola Ogbebor',
+    rating: 5,
+    text: 'I would recommend them over and over, had value for my money',
+    date: '7 months ago',
+  },
+  {
+    id: 9,
+    name: 'Isaac Laryea',
+    rating: 5,
+    text: 'very professional and solution oriented.',
+    date: '7 months ago',
+  },
+  {
+    id: 10,
+    name: 'Margaret Opare Nyarko',
+    rating: 5,
+    text: 'They are simply the best.',
+    date: '7 months ago',
+  },
+  {
+    id: 11,
+    name: 'Gifty Agyei',
+    rating: 5,
+    text: 'Very educative and professional',
+    date: '7 months ago',
+  },
+  {
+    id: 12,
+    name: 'Hannah Amofa',
+    rating: 5,
+    text: 'Very professional',
+    date: '7 months ago',
   },
 ];
 
