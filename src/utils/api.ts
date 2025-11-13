@@ -55,7 +55,7 @@ export const submitLead = async (data: LeadSubmissionData) => {
       throw new Error(error.errors || error.error || 'Failed to submit lead');
     } else {
       // If not JSON, it's likely an HTML error page
-      const text = await response.text();
+      await response.text(); // Consume the response body
       throw new Error(`Server error (${response.status}): ${response.statusText}`);
     }
   }
