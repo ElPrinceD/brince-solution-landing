@@ -11,6 +11,7 @@ export const Footer = () => {
     { path: '/services', label: 'Our Services' },
     { path: '/about', label: 'About Us' },
     { path: '/departments', label: 'Departments' },
+    { path: '/careers', label: 'Careers' },
     { path: '/contact', label: 'Contact Us' },
   ];
 
