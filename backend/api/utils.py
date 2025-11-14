@@ -169,15 +169,19 @@ Brince Solutions Team
     
     try:
         # Send to sales, admin, and office
+        recipients = ['sales@brincesolutions.com', 'admin@brincesolutions.com', 'office@brincesolutions.com']
+        print(f"Sending booking confirmation email to: {recipients}")
         send_mail(
             subject=admin_subject,
             message=admin_message,
             from_email=settings.EMAIL_HOST_USER,  # Use EMAIL_HOST_USER as from_email for Office365
-            recipient_list=['sales@brincesolutions.com', 'admin@brincesolutions.com', 'office@brincesolutions.com'],
+            recipient_list=recipients,
             fail_silently=False,
         )
+        print(f"Booking confirmation email sent successfully to {recipients}")
         
         # Send to customer
+        print(f"Sending booking confirmation email to customer: {lead.email}")
         send_mail(
             subject=customer_subject,
             message=customer_message,
@@ -185,6 +189,7 @@ Brince Solutions Team
             recipient_list=[lead.email],
             fail_silently=False,
         )
+        print(f"Customer confirmation email sent successfully to {lead.email}")
         
         return True
     except Exception as e:
