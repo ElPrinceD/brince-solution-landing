@@ -114,7 +114,6 @@ APPOINTMENT DETAILS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Service: {appointment_details.get("title", "N/A") if appointment_details else "N/A"}
 - Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
-- Price: {appointment_details.get("price", "N/A") if appointment_details else "N/A"}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -159,7 +158,6 @@ Your booking has been confirmed:
 
 Service: {appointment_details.get("title", "Appointment") if appointment_details else "Appointment"}
 Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
-{f"Amount Paid: {appointment_details.get('price', 'N/A')}" if appointment_details and appointment_details.get('price') != 'Free' else "This is a free consultation"}
 
 Our team will contact you shortly to finalize the details and schedule your appointment.
 
@@ -170,12 +168,12 @@ Brince Solutions Team
 """
     
     try:
-        # Send to admin and office
+        # Send to sales, admin, and office
         send_mail(
             subject=admin_subject,
             message=admin_message,
             from_email=settings.EMAIL_HOST_USER,  # Use EMAIL_HOST_USER as from_email for Office365
-            recipient_list=['admin@brincesolutions.com', 'office@brincesolutions.com'],
+            recipient_list=['sales@brincesolutions.com', 'admin@brincesolutions.com', 'office@brincesolutions.com'],
             fail_silently=False,
         )
         

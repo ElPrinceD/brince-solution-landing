@@ -20,9 +20,44 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
     name: '',
     email: '',
     phone: '',
+    date: '',
+    time: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Generate available dates (Monday-Friday only, next 30 days)
+  const getAvailableDates = () => {
+    const dates = [];
+    const today = new Date();
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) { // Monday to Friday
+        dates.push(date);
+      }
+    }
+    return dates;
+  };
+
+  // Generate available times (9am to 5pm)
+  const getAvailableTimes = () => {
+    const times = [];
+    for (let hour = 9; hour <= 17; hour++) {
+      times.push(`${hour.toString().padStart(2, '0')}:00`);
+    }
+    return times;
+  };
+
+  const formatDateForInput = (date: Date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const formatDateForDisplay = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  };
 
   const isFree = appointment.price.toLowerCase() === 'free' || appointment.price === '£0';
   const priceAmount = parseFloat(appointment.price.replace(/[£,]/g, '')) || 0;
@@ -56,7 +91,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
         longTermGoals: 'Not specified',
         challenges: 'Not specified',
         servicesSeeking: appointment.title,
-        additionalInfo: `Appointment booking - ${appointment.duration} - ${priceInfo}`,
+        additionalInfo: `Appointment booking - ${appointment.duration} - ${priceInfo}${customerInfo.date ? ` - Date: ${formatDateForDisplay(customerInfo.date)}` : ''}${customerInfo.time ? ` - Time: ${customerInfo.time}` : ''}`,
       });
 
       if (isFree) {
@@ -79,7 +114,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
 
   const handleClose = () => {
     setStep('info');
-    setCustomerInfo({ name: '', email: '', phone: '' });
+    setCustomerInfo({ name: '', email: '', phone: '', date: '', time: '' });
     setError(null);
     onClose();
   };
@@ -169,6 +204,48 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
                       className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
                       placeholder="+44 7911 123456"
                     />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="date" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Preferred Date <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        id="date"
+                        required
+                        value={customerInfo.date}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, date: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                      >
+                        <option value="">Select a date</option>
+                        {getAvailableDates().map((date) => (
+                          <option key={formatDateForInput(date)} value={formatDateForInput(date)}>
+                            {formatDateForDisplay(formatDateForInput(date))}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="time" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Preferred Time <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        id="time"
+                        required
+                        value={customerInfo.time}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, time: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-navy-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                      >
+                        <option value="">Select a time</option>
+                        {getAvailableTimes().map((time) => (
+                          <option key={time} value={time}>
+                            {time}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   {error && (

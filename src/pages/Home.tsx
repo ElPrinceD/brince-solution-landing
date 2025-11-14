@@ -35,20 +35,32 @@ export const Home = () => {
               Join hundreds of successful businesses that trust Brince Solutions for their lead generation needs.
             </p>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <div className="text-3xl mb-3">📈</div>
-                <h3 className="font-bold text-lg mb-2">Proven Results</h3>
-                <p className="text-sm text-gray-100">Increase your leads with our tested strategies</p>
+              <div className="relative rounded-xl p-6 overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/80 to-purple-600/80 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                <div className="relative z-10">
+                  <div className="text-3xl mb-3">📈</div>
+                  <h3 className="font-bold text-lg mb-2 text-white">Proven Results</h3>
+                  <p className="text-sm text-gray-100">Increase your leads with our tested strategies</p>
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <div className="text-3xl mb-3">🎯</div>
-                <h3 className="font-bold text-lg mb-2">Targeted Approach</h3>
-                <p className="text-sm text-gray-100">Reach the right audience for your business</p>
+              <div className="relative rounded-xl p-6 overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-600/80 to-teal-600/80 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                <div className="relative z-10">
+                  <div className="text-3xl mb-3">🎯</div>
+                  <h3 className="font-bold text-lg mb-2 text-white">Targeted Approach</h3>
+                  <p className="text-sm text-gray-100">Reach the right audience for your business</p>
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <div className="text-3xl mb-3">⚡</div>
-                <h3 className="font-bold text-lg mb-2">Quick Setup</h3>
-                <p className="text-sm text-gray-100">Get your lead generation system running fast</p>
+              <div className="relative rounded-xl p-6 overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-600/80 to-red-600/80 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                <div className="relative z-10">
+                  <div className="text-3xl mb-3">⚡</div>
+                  <h3 className="font-bold text-lg mb-2 text-white">Quick Setup</h3>
+                  <p className="text-sm text-gray-100">Get your lead generation system running fast</p>
+                </div>
               </div>
             </div>
             <LeadGenForm />
