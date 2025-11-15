@@ -3,11 +3,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.mail import send_mail, EmailMessage
 import stripe
 import json
 import logging
 import requests
 from django.conf import settings
+from django.utils import timezone
 from .models import Lead, Payment
 from .serializers import LeadSerializer, PaymentSerializer
 from .utils import send_lead_notification_email, send_lead_confirmation_email, send_booking_confirmation_email
@@ -297,5 +299,79 @@ def get_google_reviews(request):
         logger.error(f"Unexpected error fetching Google Reviews: {str(e)}", exc_info=True)
         return Response({
             'error': 'An unexpected error occurred'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+def submit_job_application(request):
+    """Handle job application submission with CV upload"""
+    logger.info(f"Received job application submission")
+    
+    try:
+        full_name = request.POST.get('full_name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        position = request.POST.get('position', '')
+        cover_letter = request.POST.get('cover_letter', '')
+        cv_file = request.FILES.get('cv', None)
+        
+        if not all([full_name, email, phone, position, cover_letter, cv_file]):
+            return Response({
+                'error': 'All fields including CV are required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Create email message
+        subject = f'New Job Application: {full_name} - {position}'
+        
+        message = f"""
+New Job Application Received
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+APPLICANT INFORMATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Full Name: {full_name}
+- Email: {email}
+- Phone: {phone}
+- Position Applied For: {position}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COVER LETTER:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{cover_letter}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CV/Resume attached to this email.
+
+Application submitted at: {timezone.now()}
+"""
+        
+        # Create email with attachment
+        email_msg = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=settings.EMAIL_HOST_USER,
+            to=['sales@brincesolutions.com'],
+        )
+        
+        # Attach CV file
+        if cv_file:
+            email_msg.attach(cv_file.name, cv_file.read(), cv_file.content_type)
+        
+        # Send email
+        email_msg.send(fail_silently=False)
+        logger.info(f"Job application email sent to sales@brincesolutions.com for {full_name}")
+        
+        return Response({
+            'success': True,
+            'message': 'Application submitted successfully'
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        logger.error(f"Error processing job application: {str(e)}", exc_info=True)
+        return Response({
+            'error': 'An error occurred while processing your application'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

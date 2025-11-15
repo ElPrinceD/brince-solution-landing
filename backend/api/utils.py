@@ -168,8 +168,8 @@ Brince Solutions Team
 """
     
     try:
-        # Send to sales, admin, and office
-        recipients = ['sales@brincesolutions.com', 'admin@brincesolutions.com', 'office@brincesolutions.com']
+        # Send booking confirmations ONLY to sales@brincesolutions.com
+        recipients = ['sales@brincesolutions.com']
         print(f"Sending booking confirmation email to: {recipients}")
         send_mail(
             subject=admin_subject,

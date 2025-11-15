@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { JobApplicationForm } from '../components/JobApplicationForm';
 
 export const Careers = () => {
   return (
@@ -165,12 +166,7 @@ export const Careers = () => {
             </section>
 
             <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <Link
-                to="/contact"
-                className="inline-block px-8 py-4 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-all shadow-lg hover:shadow-xl"
-              >
-                Apply Now
-              </Link>
+              <JobApplicationForm />
             </div>
           </div>
         </motion.div>

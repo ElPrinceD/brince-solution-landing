@@ -68,6 +68,99 @@ export const Home = () => {
         </div>
       </section>
 
+      {/* Free Webinar Announcement */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-navy-900 dark:via-navy-800 dark:to-navy-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white dark:bg-navy-800 rounded-3xl shadow-2xl overflow-hidden"
+          >
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Left Side - Content */}
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <div className="inline-block bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-semibold mb-6 w-fit">
+                  🎓 Free Webinar
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                  How to Grow & Scale Your Business
+                </h2>
+                <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
+                  Join us for an exclusive free webinar next Friday where industry experts will share proven strategies to grow and scale your business successfully.
+                </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">📅</span>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Date</p>
+                      <p className="text-gray-600 dark:text-gray-400">Next Friday</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">⏰</span>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Time</p>
+                      <p className="text-gray-600 dark:text-gray-400">2:00 PM - 4:00 PM GMT</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">💻</span>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">Format</p>
+                      <p className="text-gray-600 dark:text-gray-400">Online - Join from anywhere</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-6 mb-8">
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3">What You'll Learn:</h3>
+                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                    <li className="flex items-start">
+                      <span className="text-primary-500 mr-2">✓</span>
+                      <span>Proven strategies for business growth</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary-500 mr-2">✓</span>
+                      <span>Scaling techniques that actually work</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary-500 mr-2">✓</span>
+                      <span>Common pitfalls to avoid</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary-500 mr-2">✓</span>
+                      <span>Q&A session with industry experts</span>
+                    </li>
+                  </ul>
+                </div>
+                <Link
+                  to="/contact"
+                  className="inline-block px-8 py-4 bg-primary-500 text-white rounded-xl font-bold text-lg hover:bg-primary-600 transition-all shadow-lg hover:shadow-xl text-center"
+                >
+                  Register Now - It's Free!
+                </Link>
+              </div>
+              {/* Right Side - Visual */}
+              <div className="bg-gradient-to-br from-primary-500 to-primary-700 p-8 md:p-12 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                  <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
+                </div>
+                <div className="relative z-10 text-center text-white">
+                  <div className="text-8xl mb-6">🎯</div>
+                  <h3 className="text-3xl font-bold mb-4">Free Business Growth Webinar</h3>
+                  <p className="text-xl text-white/90 mb-6">Limited Seats Available</p>
+                  <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                    <p className="text-2xl font-bold mb-2">100% Free</p>
+                    <p className="text-white/90">No hidden costs, no commitments</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* BrightHR Partnership */}
       <section className="py-20 bg-white dark:bg-navy-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
