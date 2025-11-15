@@ -1,0 +1,77 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    DEPLOYMENT INSTRUCTIONS - BRINCE SOLUTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+All code changes have been committed and pushed to GitHub.
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: CONNECT TO EC2
+═══════════════════════════════════════════════════════════════════════════════
+
+ssh -i deploy/brince-solutions-key.pem ubuntu@98.94.179.168
+
+If SSH times out, check:
+- EC2 instance is running
+- Security group allows SSH (port 22) from your IP
+- Try using the Public IP: 44.200.190.222 instead
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: DEPLOY BACKEND
+═══════════════════════════════════════════════════════════════════════════════
+
+cd /var/www/brince-backend
+sudo -u brince git pull origin main
+cd backend
+sudo -u brince ../venv/bin/pip install -q requests
+sudo -u brince ../venv/bin/python manage.py migrate --noinput
+sudo systemctl restart brince-backend
+sudo systemctl status brince-backend
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: DEPLOY FRONTEND
+═══════════════════════════════════════════════════════════════════════════════
+
+cd /var/www/brince-frontend
+sudo -u brince git pull origin main
+sudo -u brince npm ci --legacy-peer-deps
+sudo -u brince npm run build
+sudo systemctl reload nginx
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: VERIFY CREDENTIALS
+═══════════════════════════════════════════════════════════════════════════════
+
+Backend .env should have:
+EMAIL_HOST=smtp-mail.outlook.com
+EMAIL_HOST_USER=admin@brincesolutions.com
+EMAIL_HOST_PASSWORD=mjyplpnjbvmrjrzq
+STRIPE_SECRET_KEY=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
+STRIPE_PUBLISHABLE_KEY=pk_live_51SRz7yHlmo3ECKx97ixUJpyCTCqhKApRGvpv2DkqpUM0oRo4k3xzREw8Gvc3juQ4jN3J68DTlkpxMNCQoselC4DH00NCsCS82C
+STRIPE_WEBHOOK_SECRET=whsec_DuxK6anKJTpvBy5GsIYuoRoleg1yvFbL
+ALLOWED_HOSTS=localhost,127.0.0.1,brincesolutions.com,www.brincesolutions.com
+
+Frontend .env.production should have:
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_51SRz7yHlmo3ECKx97ixUJpyCTCqhKApRGvpv2DkqpUM0oRo4k3xzREw8Gvc3juQ4jN3J68DTlkpxMNCQoselC4DH00NCsCS82C
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 5: TEST DEPLOYMENT
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Visit: https://brincesolutions.com
+2. Test booking: Book an appointment and verify email goes to sales@brincesolutions.com
+3. Test careers: https://brincesolutions.com/#/careers - Submit job application
+4. Check logs: sudo journalctl -u brince-backend --since '5 minutes ago' | grep -i email
+
+═══════════════════════════════════════════════════════════════════════════════
+CHANGES DEPLOYED:
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Booking emails now send ONLY to sales@brincesolutions.com
+✅ Job application form with CV upload on Careers page
+✅ Free webinar announcement on homepage
+✅ Date/time picker for bookings (Mon-Fri, 9am-5pm)
+✅ Background images for benefit cards
+✅ Price removed from booking emails
+
+═══════════════════════════════════════════════════════════════════════════════
+

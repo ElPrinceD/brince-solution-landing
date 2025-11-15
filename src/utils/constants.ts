@@ -324,15 +324,30 @@ export const testimonials = [
 ];
 
 export const partners = [
-  { name: 'BrightHR', logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&h=100&fit=crop' },
-  { name: 'Salford City Football Club', logo: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=200&h=100&fit=crop' },
-  { name: 'Basketball England', logo: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=200&h=100&fit=crop' },
-  { name: 'Quooker', logo: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=100&fit=crop' },
-  { name: 'Leicester Students Union', logo: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=100&fit=crop' },
-  { name: 'Mattinson Partnership', logo: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=200&h=100&fit=crop' },
-  { name: 'Theatr', logo: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=200&h=100&fit=crop' },
-  { name: 'Centrix', logo: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=200&h=100&fit=crop' },
-  { name: 'DPH', logo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=100&fit=crop' },
+  { 
+    name: 'CPD', 
+    logo: 'https://www.cpdstandards.com/wp-content/uploads/2021/06/CPD-Standards-Office-Logo.png' 
+  },
+  { 
+    name: 'IBS', 
+    logo: 'https://www.ibs.org.uk/wp-content/uploads/2021/03/IBS-Logo.png' 
+  },
+  { 
+    name: 'KASTON', 
+    logo: 'https://kaston.co.uk/wp-content/uploads/2021/05/Kaston-Logo.png' 
+  },
+  { 
+    name: 'BrightHR', 
+    logo: 'https://www.brighthr.com/wp-content/uploads/2021/06/BrightHR-Logo.png' 
+  },
+  { 
+    name: 'REEDROCK', 
+    logo: 'https://reedrock.com/wp-content/uploads/2021/05/Reedrock-Logo.png' 
+  },
+  { 
+    name: 'British Council', 
+    logo: 'https://www.britishcouncil.org/sites/default/files/british-council-logo.png' 
+  },
 ];
 
 export const newsPosts = [

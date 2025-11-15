@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { ServiceCard } from '../components/ServiceCard';
 import { StatisticCounter } from '../components/StatisticCounter';
@@ -7,6 +6,7 @@ import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
 import { LeadGenForm } from '../components/LeadGenForm';
 import { AppointmentCard } from '../components/AppointmentCard';
+import { WebinarRegistrationForm } from '../components/WebinarRegistrationForm';
 import { services, testimonials, newsPosts, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
@@ -87,14 +87,14 @@ export const Home = () => {
                   How to Grow & Scale Your Business
                 </h2>
                 <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
-                  Join us for an exclusive free webinar next Friday where industry experts will share proven strategies to grow and scale your business successfully.
+                  Join us for an exclusive free webinar where industry experts will share proven strategies to grow and scale your business successfully.
                 </p>
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start space-x-3">
                     <span className="text-2xl">📅</span>
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">Date</p>
-                      <p className="text-gray-600 dark:text-gray-400">Next Friday</p>
+                      <p className="text-gray-600 dark:text-gray-400">Friday, November 21, 2025</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -133,19 +133,16 @@ export const Home = () => {
                     </li>
                   </ul>
                 </div>
-                <Link
-                  to="/contact"
-                  className="inline-block px-8 py-4 bg-primary-500 text-white rounded-xl font-bold text-lg hover:bg-primary-600 transition-all shadow-lg hover:shadow-xl text-center"
-                >
-                  Register Now - It's Free!
-                </Link>
+                <WebinarRegistrationForm />
               </div>
               {/* Right Side - Visual */}
               <div className="bg-gradient-to-br from-primary-500 to-primary-700 p-8 md:p-12 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-                  <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
-                </div>
+                <img
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop"
+                  alt="Business Growth Webinar"
+                  className="absolute inset-0 w-full h-full object-cover opacity-20"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/90 to-primary-700/90"></div>
                 <div className="relative z-10 text-center text-white">
                   <div className="text-8xl mb-6">🎯</div>
                   <h3 className="text-3xl font-bold mb-4">Free Business Growth Webinar</h3>

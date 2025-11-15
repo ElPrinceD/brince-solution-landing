@@ -12,7 +12,7 @@ from django.conf import settings
 from django.utils import timezone
 from .models import Lead, Payment
 from .serializers import LeadSerializer, PaymentSerializer
-from .utils import send_lead_notification_email, send_lead_confirmation_email, send_booking_confirmation_email
+from .utils import send_lead_notification_email, send_lead_confirmation_email, send_booking_confirmation_email, send_webinar_registration_email
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -36,10 +36,26 @@ def submit_lead(request):
             lead = serializer.save()
             logger.info(f"Lead created successfully: ID={lead.id}, Email={lead.email}")
             
-            # Check if this is a booking (has "Booking:" in short_term_goals)
-            is_booking = 'Booking:' in lead.short_term_goals or 'Appointment booking' in lead.additional_info
+            # Check if this is a webinar registration
+            is_webinar = 'Webinar Registration' in lead.short_term_goals or 'Free Webinar' in lead.services_seeking
             
-            if is_booking:
+            if is_webinar:
+                # Send webinar registration email to sales
+                try:
+                    send_webinar_registration_email(lead)
+                    logger.info(f"Webinar registration email sent for lead ID={lead.id}")
+                except Exception as e:
+                    logger.error(f"Failed to send webinar registration email for lead ID={lead.id}: {str(e)}")
+                
+                # Send confirmation to customer
+                try:
+                    send_lead_confirmation_email(lead)
+                    logger.info(f"Webinar confirmation email sent to customer for lead ID={lead.id}")
+                except Exception as e:
+                    logger.error(f"Failed to send webinar confirmation email for lead ID={lead.id}: {str(e)}")
+            
+            # Check if this is a booking (has "Booking:" in short_term_goals)
+            elif 'Booking:' in lead.short_term_goals or 'Appointment booking' in lead.additional_info:
                 # Extract appointment details from lead data
                 appointment_title = lead.services_seeking or 'Appointment'
                 # Extract duration and price from additional_info (format: "Appointment booking - 30 mins - Free")
@@ -214,14 +230,19 @@ def stripe_webhook(request):
             # Send booking confirmation email if there's an associated lead
             if payment.lead:
                 try:
+                    # Extract appointment details from payment description
+                    desc_parts = payment.description.split(' - ') if ' - ' in payment.description else [payment.description]
                     appointment_details = {
-                        'title': payment.description.split(' - ')[0] if ' - ' in payment.description else payment.description,
-                        'duration': payment.description.split(' - ')[1] if ' - ' in payment.description else 'N/A',
-                        'price': f'£{payment.amount:.2f}'
+                        'title': desc_parts[0] if len(desc_parts) > 0 else payment.description,
+                        'duration': desc_parts[1] if len(desc_parts) > 1 else 'N/A',
+                        'price': f'£{payment.amount:.2f}',
+                        'date': payment.lead.additional_info.split('Date: ')[1].split('\n')[0] if 'Date: ' in payment.lead.additional_info else 'To be scheduled',
+                        'time': payment.lead.additional_info.split('Time: ')[1].split('\n')[0] if 'Time: ' in payment.lead.additional_info else 'To be scheduled'
                     }
                     payment_details = {
                         'status': 'completed',
-                        'payment_id': payment.id
+                        'payment_id': payment.id,
+                        'amount': f'£{payment.amount:.2f}'
                     }
                     send_booking_confirmation_email(payment.lead, appointment_details, payment_details)
                     logger.info(f"Booking confirmation email sent after payment success for lead ID={payment.lead.id}")
