@@ -102,7 +102,7 @@ export const Home = () => {
                     <span className="text-2xl">⏰</span>
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">Time</p>
-                      <p className="text-gray-600 dark:text-gray-400">2:00 PM - 4:00 PM GMT</p>
+                      <p className="text-gray-600 dark:text-gray-400">6:00 PM - 8:00 PM GMT</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">

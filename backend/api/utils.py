@@ -307,7 +307,7 @@ Position: {lead.position or "Not provided"}
 WEBINAR DETAILS
 Event: Free Webinar - How to Grow & Scale Your Business
 Date: Friday, November 21, 2025
-Time: 2:00 PM - 4:00 PM GMT
+Time: 6:00 PM - 8:00 PM GMT
 
 Registered: {lead.created_at}
 Lead ID: {lead.id}

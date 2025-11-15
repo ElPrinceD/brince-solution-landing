@@ -215,6 +215,8 @@ def create_payment_intent(request):
 @csrf_exempt
 def stripe_webhook(request):
     """Handle Stripe webhook events"""
+    logger.info("Webhook endpoint called")
+    
     if request.method != 'POST':
         logger.warning("Webhook received non-POST request")
         return JsonResponse({'error': 'Method not allowed'}, status=405)
@@ -222,33 +224,42 @@ def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
     
+    logger.info(f"Webhook received - Method: {request.method}, Has signature: {bool(sig_header)}")
+    
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
-        logger.info(f"Webhook event received: {event['type']}")
+        logger.info(f"Webhook event received and verified: {event['type']}, ID: {event.get('id')}")
     except ValueError as e:
         logger.error(f"Invalid webhook payload: {str(e)}")
         return JsonResponse({'error': 'Invalid payload'}, status=400)
     except stripe.error.SignatureVerificationError as e:
         logger.error(f"Invalid webhook signature: {str(e)}")
         return JsonResponse({'error': 'Invalid signature'}, status=400)
+    except Exception as e:
+        logger.error(f"Error processing webhook: {str(e)}", exc_info=True)
+        return JsonResponse({'error': 'Webhook processing error'}, status=500)
     
     # Handle the event
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']
+        payment_intent_id = payment_intent['id']
+        
+        logger.info(f"Processing payment_intent.succeeded for: {payment_intent_id}")
         
         try:
             payment = Payment.objects.get(
-                stripe_payment_intent_id=payment_intent['id']
+                stripe_payment_intent_id=payment_intent_id
             )
             payment.status = 'completed'
             payment.stripe_customer_id = payment_intent.get('customer', '')
             payment.save()
-            logger.info(f"Payment marked as completed: ID={payment.id}")
+            logger.info(f"Payment marked as completed: ID={payment.id}, Lead ID={payment.lead.id if payment.lead else 'None'}")
             
             # Send booking confirmation email if there's an associated lead
             if payment.lead:
+                logger.info(f"Sending booking confirmation email for payment ID={payment.id}, Lead ID={payment.lead.id}")
                 try:
                     # Extract appointment details from payment description
                     desc_parts = payment.description.split(' - ') if ' - ' in payment.description else [payment.description]
@@ -283,12 +294,18 @@ def stripe_webhook(request):
                         'payment_id': payment.id,
                         'amount': f'£{payment.amount:.2f}'
                     }
+                    
+                    logger.info(f"Calling send_booking_confirmation_email with appointment_details: {appointment_details}, payment_details: {payment_details}")
                     send_booking_confirmation_email(payment.lead, appointment_details, payment_details)
-                    logger.info(f"Booking confirmation email sent after payment success for lead ID={payment.lead.id}")
+                    logger.info(f"✅ Booking confirmation email sent successfully after payment success for lead ID={payment.lead.id}")
                 except Exception as e:
-                    logger.error(f"Failed to send booking confirmation email after payment: {str(e)}")
+                    logger.error(f"❌ Failed to send booking confirmation email after payment: {str(e)}", exc_info=True)
+            else:
+                logger.warning(f"Payment ID={payment.id} has no associated lead")
         except Payment.DoesNotExist:
-            logger.warning(f"Payment not found for intent: {payment_intent['id']}")
+            logger.warning(f"Payment not found for intent: {payment_intent_id}")
+        except Exception as e:
+            logger.error(f"Error processing payment_intent.succeeded: {str(e)}", exc_info=True)
     
     elif event['type'] == 'payment_intent.payment_failed':
         payment_intent = event['data']['object']
