@@ -127,9 +127,9 @@ def is_business_booking(lead):
     """Determine if this is a business booking or personal appointment"""
     # Check if business fields are filled
     has_business_info = (
-        lead.business_name and lead.business_name not in ['', 'Not provided', 'Not specified'] or
-        lead.industry and lead.industry not in ['', 'Not provided', 'Not specified'] or
-        lead.business_structure and lead.business_structure not in ['', 'Not provided', 'Not specified'] or
+        (lead.business_name and lead.business_name not in ['', 'Not provided', 'Not specified']) or
+        (lead.industry and lead.industry not in ['', 'Not provided', 'Not specified']) or
+        (lead.business_structure and lead.business_structure not in ['', 'Not provided', 'Not specified']) or
         (lead.years_operation and lead.years_operation not in ['', 'Not provided', 'Not specified']) or
         (lead.employees and lead.employees not in ['', 'Not provided', 'Not specified'])
     )
