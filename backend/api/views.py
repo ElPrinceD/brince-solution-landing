@@ -61,10 +61,28 @@ def submit_lead(request):
                 # Extract duration and price from additional_info (format: "Appointment booking - 30 mins - Free")
                 appointment_duration = 'N/A'
                 appointment_price = 'N/A'
+                appointment_date = 'To be scheduled'
+                appointment_time = 'To be scheduled'
+                
                 if 'Appointment booking' in lead.additional_info:
                     parts = lead.additional_info.replace('Appointment booking - ', '').split(' - ')
                     appointment_duration = parts[0] if len(parts) > 0 else 'N/A'
                     appointment_price = parts[1] if len(parts) > 1 else 'N/A'
+                    
+                    # Extract date and time from additional_info
+                    if 'Date: ' in lead.additional_info:
+                        date_part = lead.additional_info.split('Date: ')[1]
+                        if ' - Time:' in date_part:
+                            appointment_date = date_part.split(' - Time:')[0].strip()
+                        else:
+                            appointment_date = date_part.strip()
+                    
+                    if 'Time: ' in lead.additional_info:
+                        time_part = lead.additional_info.split('Time: ')[1]
+                        if ' - ' in time_part:
+                            appointment_time = time_part.split(' - ')[0].strip()
+                        else:
+                            appointment_time = time_part.strip()
                 
                 # Check if it's a free booking - check both short_term_goals and additional_info
                 is_free_booking = 'Free' in lead.short_term_goals or 'Free' in lead.additional_info or appointment_price == 'Free'
@@ -73,7 +91,9 @@ def submit_lead(request):
                     appointment_details = {
                         'title': appointment_title,
                         'duration': appointment_duration,
-                        'price': appointment_price
+                        'price': appointment_price,
+                        'date': appointment_date,
+                        'time': appointment_time
                     }
                     
                     # Send booking confirmation emails for free bookings
@@ -232,12 +252,31 @@ def stripe_webhook(request):
                 try:
                     # Extract appointment details from payment description
                     desc_parts = payment.description.split(' - ') if ' - ' in payment.description else [payment.description]
+                    
+                    # Extract date and time from additional_info
+                    appointment_date = 'To be scheduled'
+                    appointment_time = 'To be scheduled'
+                    if payment.lead.additional_info:
+                        if 'Date: ' in payment.lead.additional_info:
+                            date_part = payment.lead.additional_info.split('Date: ')[1]
+                            if ' - Time:' in date_part:
+                                appointment_date = date_part.split(' - Time:')[0].strip()
+                            else:
+                                appointment_date = date_part.strip()
+                        
+                        if 'Time: ' in payment.lead.additional_info:
+                            time_part = payment.lead.additional_info.split('Time: ')[1]
+                            if ' - ' in time_part:
+                                appointment_time = time_part.split(' - ')[0].strip()
+                            else:
+                                appointment_time = time_part.strip()
+                    
                     appointment_details = {
                         'title': desc_parts[0] if len(desc_parts) > 0 else payment.description,
                         'duration': desc_parts[1] if len(desc_parts) > 1 else 'N/A',
                         'price': f'£{payment.amount:.2f}',
-                        'date': payment.lead.additional_info.split('Date: ')[1].split('\n')[0] if 'Date: ' in payment.lead.additional_info else 'To be scheduled',
-                        'time': payment.lead.additional_info.split('Time: ')[1].split('\n')[0] if 'Time: ' in payment.lead.additional_info else 'To be scheduled'
+                        'date': appointment_date,
+                        'time': appointment_time
                     }
                     payment_details = {
                         'status': 'completed',

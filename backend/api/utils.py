@@ -96,10 +96,69 @@ Brince Solutions Team
         return False
 
 
+def extract_date_time_from_additional_info(additional_info):
+    """Extract date and time from additional_info string"""
+    date = "To be scheduled"
+    time = "To be scheduled"
+    
+    if additional_info:
+        # Look for "Date: " pattern
+        if "Date: " in additional_info:
+            date_part = additional_info.split("Date: ")[1]
+            # Extract date (everything until " - Time:" or end of string)
+            if " - Time:" in date_part:
+                date = date_part.split(" - Time:")[0].strip()
+            else:
+                date = date_part.strip()
+        
+        # Look for "Time: " pattern
+        if "Time: " in additional_info:
+            time_part = additional_info.split("Time: ")[1]
+            # Extract time (everything until next " - " or end of string)
+            if " - " in time_part:
+                time = time_part.split(" - ")[0].strip()
+            else:
+                time = time_part.strip()
+    
+    return date, time
+
+
+def is_business_booking(lead):
+    """Determine if this is a business booking or personal appointment"""
+    # Check if business fields are filled
+    has_business_info = (
+        lead.business_name and lead.business_name not in ['', 'Not provided', 'Not specified'] or
+        lead.industry and lead.industry not in ['', 'Not provided', 'Not specified'] or
+        lead.business_structure and lead.business_structure not in ['', 'Not provided', 'Not specified'] or
+        (lead.years_operation and lead.years_operation not in ['', 'Not provided', 'Not specified']) or
+        (lead.employees and lead.employees not in ['', 'Not provided', 'Not specified'])
+    )
+    
+    # Check if it's a lead generation inquiry
+    is_lead_gen = 'Lead Generation' in (lead.services_seeking or '') or 'Lead Generation' in (lead.short_term_goals or '')
+    
+    return has_business_info or is_lead_gen
+
+
 def send_booking_confirmation_email(lead, appointment_details=None, payment_details=None):
     """Send booking confirmation email to sales and customer"""
+    # Extract date and time from additional_info
+    date, time = extract_date_time_from_additional_info(lead.additional_info)
+    
+    # Update appointment_details with extracted date/time if not already set
+    if appointment_details:
+        if not appointment_details.get('date') or appointment_details.get('date') == 'To be scheduled':
+            appointment_details['date'] = date
+        if not appointment_details.get('time') or appointment_details.get('time') == 'To be scheduled':
+            appointment_details['time'] = time
+    else:
+        appointment_details = {'date': date, 'time': time}
+    
+    # Determine if this is a business booking or personal appointment
+    is_business = is_business_booking(lead)
+    
     # Email to sales team
-    sales_subject = f'New Booking: {lead.contact_person} - {appointment_details.get("title", "Appointment") if appointment_details else "Appointment"}'
+    sales_subject = f'New {"Business Booking" if is_business else "Appointment"}: {lead.contact_person} - {appointment_details.get("title", "Appointment") if appointment_details else "Appointment"}'
     
     payment_info = ""
     if payment_details:
@@ -115,9 +174,11 @@ Price: {appointment_details.get('price', 'N/A')}
 
 """
     
-    sales_message = f"""Dear Sales Team,
+    # Different email templates for business vs personal
+    if is_business:
+        sales_message = f"""Dear Sales Team,
 
-A new booking has been received through our website.
+A new business booking has been received through our website.
 
 CUSTOMER INFORMATION
 Name: {lead.contact_person}
@@ -130,8 +191,8 @@ Business Address: {lead.business_address or "Not provided"}
 APPOINTMENT DETAILS
 Service: {appointment_details.get("title", "N/A") if appointment_details else "N/A"}
 Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
-Date: {appointment_details.get("date", "To be scheduled") if appointment_details else "To be scheduled"}
-Time: {appointment_details.get("time", "To be scheduled") if appointment_details else "To be scheduled"}
+Date: {appointment_details.get("date", "To be scheduled")}
+Time: {appointment_details.get("time", "To be scheduled")}
 
 {payment_info}BUSINESS INFORMATION
 Industry: {lead.industry or "Not provided"}
@@ -151,23 +212,46 @@ Lead ID: {lead.id}
 Best regards,
 Brince Solutions System
 """
+    else:
+        # Personal appointment - simpler template
+        sales_message = f"""Dear Sales Team,
+
+A new appointment booking has been received through our website.
+
+CUSTOMER INFORMATION
+Name: {lead.contact_person}
+Email: {lead.email}
+Phone: {lead.phone or "Not provided"}
+
+APPOINTMENT DETAILS
+Service: {appointment_details.get("title", "N/A") if appointment_details else "N/A"}
+Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
+Date: {appointment_details.get("date", "To be scheduled")}
+Time: {appointment_details.get("time", "To be scheduled")}
+
+{payment_info}Booking Created: {lead.created_at}
+Lead ID: {lead.id}
+
+Best regards,
+Brince Solutions System
+"""
     
     # Email to customer
-    customer_subject = 'Booking Confirmation - Brince Solutions'
+    customer_subject = 'Appointment Confirmation - Brince Solutions'
     
     customer_message = f"""Dear {lead.contact_person},
 
-Thank you for booking with Brince Solutions. Your booking has been confirmed.
+Thank you for booking an appointment with Brince Solutions. Your appointment has been confirmed.
 
-BOOKING DETAILS
+APPOINTMENT DETAILS
 Service: {appointment_details.get("title", "Appointment") if appointment_details else "Appointment"}
 Duration: {appointment_details.get("duration", "N/A") if appointment_details else "N/A"}
-{f"Date: {appointment_details.get('date', 'To be scheduled')}" if appointment_details and appointment_details.get('date') else ""}
-{f"Time: {appointment_details.get('time', 'To be scheduled')}" if appointment_details and appointment_details.get('time') else ""}
+Date: {appointment_details.get("date", "To be scheduled")}
+Time: {appointment_details.get("time", "To be scheduled")}
 
-Our team will contact you shortly to finalize the details and schedule your appointment.
+Our team will contact you shortly to confirm the appointment details.
 
-If you have any questions, please contact us at sales@brincesolutions.com or call 02034111756.
+If you have any questions or need to reschedule, please contact us at sales@brincesolutions.com or call 02034111756.
 
 Best regards,
 Brince Solutions Team
