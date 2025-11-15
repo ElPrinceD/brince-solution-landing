@@ -66,9 +66,61 @@ Brince Solutions System
 
 def send_lead_confirmation_email(lead):
     """Send confirmation email to the lead"""
-    subject = 'Thank You for Contacting Brince Solutions'
+    # Check if this is a webinar registration
+    is_webinar = 'Webinar Registration' in (lead.short_term_goals or '') or 'Free Webinar' in (lead.services_seeking or '')
     
-    message = f"""Dear {lead.contact_person},
+    if is_webinar:
+        subject = 'Webinar Registration Confirmed - Join Us on November 21, 2025'
+        
+        message = f"""Dear {lead.contact_person},
+
+Thank you for registering for our free webinar: "How to Grow & Scale Your Business". We are delighted to have you join us!
+
+WEBINAR DETAILS
+Date: Friday, November 21, 2025
+Time: 6:00 PM - 8:00 PM GMT (London)
+Format: Online via Zoom
+
+JOIN THE MEETING
+You can join the webinar using the following details:
+
+Join Zoom Meeting:
+https://us06web.zoom.us/j/86573140304?pwd=6KxhaeLAq9pj4aaKE576f71pivbBDY.1
+
+Meeting ID: 865 7314 0304
+Passcode: 076585
+
+WHAT TO EXPECT
+During this exclusive webinar, our industry experts will share:
+• Proven strategies for business growth
+• Scaling techniques that actually work
+• Common pitfalls to avoid
+• Q&A session with industry experts
+
+PREPARATION
+• Please join a few minutes early to ensure your connection is working
+• Have your questions ready for the Q&A session
+• You can access the meeting from any device (computer, tablet, or smartphone)
+
+ADD TO CALENDAR
+We recommend adding this event to your calendar to ensure you don't miss it.
+
+If you have any questions or need assistance, please contact us at sales@brincesolutions.com or call 02034111756.
+
+We look forward to seeing you at the webinar!
+
+Best regards,
+Brince Solutions Team
+
+Brince Solutions Ltd
+Email: sales@brincesolutions.com
+Phone: 02034111756
+Website: https://brincesolutions.com
+"""
+    else:
+        subject = 'Thank You for Contacting Brince Solutions'
+        
+        message = f"""Dear {lead.contact_person},
 
 Thank you for reaching out to Brince Solutions. We have received your business information and our team will review it carefully.
 
