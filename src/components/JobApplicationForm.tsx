@@ -38,7 +38,7 @@ export const JobApplicationForm = () => {
         }
       }
 
-      const data = await response.json();
+      await response.json();
       setSubmitSuccess(true);
     } catch (err: any) {
       setError(err.message || 'Failed to submit application. Please try again.');
