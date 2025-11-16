@@ -47,7 +47,7 @@ Brince Solutions System
     
     try:
         # For lead generation inquiries, send to both sales and admin
-        recipients = ['admin@brincesolutions.com', 'sales@brincesolutions.com']
+        recipients = ['admin@brincesolutions.com', 'office@brincesolutions.com']
         
         send_mail(
             subject=subject,
@@ -105,7 +105,7 @@ PREPARATION
 ADD TO CALENDAR
 We recommend adding this event to your calendar to ensure you don't miss it.
 
-If you have any questions or need assistance, please contact us at sales@brincesolutions.com or call 02034111756.
+If you have any questions or need assistance, please contact us at office@brincesolutions.com or call 02034111756.
 
 We look forward to seeing you at the webinar!
 
@@ -113,7 +113,7 @@ Best regards,
 Brince Solutions Team
 
 Brince Solutions Ltd
-Email: sales@brincesolutions.com
+Email: office@brincesolutions.com
 Phone: 02034111756
 Website: https://brincesolutions.com
 """
@@ -126,7 +126,7 @@ Thank you for reaching out to Brince Solutions. We have received your business i
 
 We will get back to you within 24 hours to discuss how we can help grow your business.
 
-If you have any immediate questions, please do not hesitate to contact us at sales@brincesolutions.com or call us at 02034111756.
+If you have any immediate questions, please do not hesitate to contact us at office@brincesolutions.com or call us at 02034111756.
 
 Best regards,
 Brince Solutions Team
@@ -303,15 +303,15 @@ Time: {appointment_details.get("time", "To be scheduled")}
 
 Our team will contact you shortly to confirm the appointment details.
 
-If you have any questions or need to reschedule, please contact us at sales@brincesolutions.com or call 02034111756.
+If you have any questions or need to reschedule, please contact us at office@brincesolutions.com or call 02034111756.
 
 Best regards,
 Brince Solutions Team
 """
     
     try:
-        # Send booking confirmations ONLY to sales@brincesolutions.com
-        recipients = ['sales@brincesolutions.com']
+        # Send booking confirmations ONLY to office@brincesolutions.com
+        recipients = ['office@brincesolutions.com']
         print(f"Sending booking confirmation email to: {recipients}")
         send_mail(
             subject=sales_subject,
@@ -369,7 +369,7 @@ Brince Solutions System
 """
     
     try:
-        recipients = ['sales@brincesolutions.com']
+        recipients = ['office@brincesolutions.com']
         send_mail(
             subject=subject,
             message=message,

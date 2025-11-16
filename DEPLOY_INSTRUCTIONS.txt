@@ -58,7 +58,7 @@ STEP 5: TEST DEPLOYMENT
 ═══════════════════════════════════════════════════════════════════════════════
 
 1. Visit: https://brincesolutions.com
-2. Test booking: Book an appointment and verify email goes to sales@brincesolutions.com
+2. Test booking: Book an appointment and verify email goes to office@brincesolutions.com
 3. Test careers: https://brincesolutions.com/#/careers - Submit job application
 4. Check logs: sudo journalctl -u brince-backend --since '5 minutes ago' | grep -i email
 
@@ -66,7 +66,7 @@ STEP 5: TEST DEPLOYMENT
 CHANGES DEPLOYED:
 ═══════════════════════════════════════════════════════════════════════════════
 
-✅ Booking emails now send ONLY to sales@brincesolutions.com
+✅ Booking emails now send ONLY to office@brincesolutions.com
 ✅ Job application form with CV upload on Careers page
 ✅ Free webinar announcement on homepage
 ✅ Date/time picker for bookings (Mon-Fri, 9am-5pm)

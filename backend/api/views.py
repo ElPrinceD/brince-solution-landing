@@ -430,7 +430,7 @@ Application submitted at: {timezone.now()}
             subject=subject,
             body=message,
             from_email=settings.EMAIL_HOST_USER,
-            to=['sales@brincesolutions.com'],
+            to=['office@brincesolutions.com'],
         )
         
         # Attach CV file
@@ -439,7 +439,7 @@ Application submitted at: {timezone.now()}
         
         # Send email
         email_msg.send(fail_silently=False)
-        logger.info(f"Job application email sent to sales@brincesolutions.com for {full_name}")
+        logger.info(f"Job application email sent to office@brincesolutions.com for {full_name}")
         
         return Response({
             'success': True,

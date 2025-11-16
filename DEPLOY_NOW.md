@@ -3,7 +3,7 @@
 ## All Changes Committed ✅
 
 All code changes have been committed and pushed to GitHub:
-- ✅ Booking emails now send ONLY to sales@brincesolutions.com
+- ✅ Booking emails now send ONLY to office@brincesolutions.com
 - ✅ Job application form with CV upload added
 - ✅ Free webinar announcement added
 - ✅ Date/time picker for bookings (Mon-Fri, 9am-5pm)
@@ -66,12 +66,12 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_live_51SRz7yHlmo3ECKx97ixUJpyCTCqhKApRGvpv2DkqpUM
 1. **Test Booking:**
    - Go to https://brincesolutions.com
    - Book an appointment
-   - Check that email goes to sales@brincesolutions.com only
+   - Check that email goes to office@brincesolutions.com only
 
 2. **Test Job Application:**
    - Go to https://brincesolutions.com/#/careers
    - Fill out application form with CV
-   - Verify email with CV attachment goes to sales@brincesolutions.com
+   - Verify email with CV attachment goes to office@brincesolutions.com
 
 3. **Check Logs:**
    ```bash
