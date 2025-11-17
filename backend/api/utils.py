@@ -341,6 +341,67 @@ Brince Solutions Team
         return False
 
 
+def send_payment_confirmation_email(payment):
+    """Send payment confirmation email to admin for every successful payment"""
+    subject = f'Payment Confirmation - Payment ID: {payment.id} - {payment.amount} {payment.currency.upper()}'
+    
+    # Get customer info
+    customer_name = payment.customer_name or 'Not provided'
+    customer_email = payment.customer_email or 'Not provided'
+    
+    # Get lead info if available
+    lead_info = ""
+    if payment.lead:
+        lead_info = f"""
+LEAD/BOOKING INFORMATION
+Lead ID: {payment.lead.id}
+Contact Person: {payment.lead.contact_person}
+Business Name: {payment.lead.business_name or "Not provided"}
+Services Seeking: {payment.lead.services_seeking or "Not provided"}
+Additional Info: {payment.lead.additional_info or "Not provided"}
+
+"""
+    
+    message = f"""Dear Admin,
+
+A payment has been successfully processed.
+
+PAYMENT INFORMATION
+Payment ID: {payment.id}
+Stripe Payment Intent ID: {payment.stripe_payment_intent_id}
+Amount: {payment.amount} {payment.currency.upper()}
+Status: {payment.status.title()}
+Description: {payment.description or "Not provided"}
+Payment Date: {payment.updated_at}
+
+CUSTOMER INFORMATION
+Name: {customer_name}
+Email: {customer_email}
+Stripe Customer ID: {payment.stripe_customer_id or "Not provided (one-time payment)"}
+
+{lead_info}This is an automated payment confirmation notification.
+
+Best regards,
+Brince Solutions Payment System
+"""
+    
+    try:
+        recipients = ['admin@brincesolutions.com']
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
+        return True
+    except Exception as e:
+        print(f"Error sending payment confirmation email: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+
 def send_webinar_registration_email(lead):
     """Send webinar registration notification to sales team"""
     subject = f'New Webinar Registration: {lead.contact_person}'

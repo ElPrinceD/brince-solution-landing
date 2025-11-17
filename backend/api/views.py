@@ -12,7 +12,7 @@ from django.conf import settings
 from django.utils import timezone
 from .models import Lead, Payment
 from .serializers import LeadSerializer, PaymentSerializer
-from .utils import send_lead_notification_email, send_lead_confirmation_email, send_booking_confirmation_email, send_webinar_registration_email
+from .utils import send_lead_notification_email, send_lead_confirmation_email, send_booking_confirmation_email, send_webinar_registration_email, send_payment_confirmation_email
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -258,6 +258,13 @@ def stripe_webhook(request):
             payment.stripe_customer_id = customer_id if customer_id else None
             payment.save()
             logger.info(f"Payment marked as completed: ID={payment.id}, Lead ID={payment.lead.id if payment.lead else 'None'}")
+            
+            # Send payment confirmation email to admin for every payment
+            try:
+                send_payment_confirmation_email(payment)
+                logger.info(f"✅ Payment confirmation email sent to admin@brincesolutions.com for payment ID={payment.id}")
+            except Exception as e:
+                logger.error(f"❌ Failed to send payment confirmation email: {str(e)}", exc_info=True)
             
             # Send booking confirmation email if there's an associated lead
             if payment.lead:
