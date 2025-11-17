@@ -25,6 +25,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [leadId, setLeadId] = useState<number | undefined>(undefined);
 
   // Generate available dates (Monday-Friday only, next 30 days)
   const getAvailableDates = () => {
@@ -71,7 +72,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
       // Submit lead information first
       // Include price in shortTermGoals so backend can detect free bookings
       const priceInfo = isFree ? 'Free' : appointment.price;
-      await submitLead({
+      const response = await submitLead({
         contactPerson: customerInfo.name,
         email: customerInfo.email,
         phone: customerInfo.phone || '',
@@ -93,6 +94,11 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
         servicesSeeking: appointment.title,
         additionalInfo: `Appointment booking - ${appointment.duration} - ${priceInfo}${customerInfo.date ? ` - Date: ${formatDateForDisplay(customerInfo.date)}` : ''}${customerInfo.time ? ` - Time: ${customerInfo.time}` : ''}`,
       });
+
+      // Store the lead_id for payment intent
+      if (response.lead_id) {
+        setLeadId(response.lead_id);
+      }
 
       if (isFree) {
         // For free appointments, go directly to success
@@ -116,6 +122,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
     setStep('info');
     setCustomerInfo({ name: '', email: '', phone: '', date: '', time: '' });
     setError(null);
+    setLeadId(undefined);
     onClose();
   };
 
@@ -289,6 +296,7 @@ export const BookingModal = ({ isOpen, onClose, appointment }: BookingModalProps
                   description={`${appointment.title} - ${appointment.duration}`}
                   customerEmail={customerInfo.email}
                   customerName={customerInfo.name}
+                  leadId={leadId}
                   onSuccess={handlePaymentSuccess}
                   onCancel={() => setStep('info')}
                 />
