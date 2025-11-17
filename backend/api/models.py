@@ -64,7 +64,7 @@ class Payment(models.Model):
     
     lead = models.ForeignKey(Lead, on_delete=models.SET_NULL, null=True, blank=True, related_name='payments')
     stripe_payment_intent_id = models.CharField(max_length=255, unique=True)
-    stripe_customer_id = models.CharField(max_length=255, blank=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default='gbp')
     status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')

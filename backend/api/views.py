@@ -253,7 +253,9 @@ def stripe_webhook(request):
                 stripe_payment_intent_id=payment_intent_id
             )
             payment.status = 'completed'
-            payment.stripe_customer_id = payment_intent.get('customer', '')
+            # Handle customer ID - can be None for one-time payments
+            customer_id = payment_intent.get('customer')
+            payment.stripe_customer_id = customer_id if customer_id else None
             payment.save()
             logger.info(f"Payment marked as completed: ID={payment.id}, Lead ID={payment.lead.id if payment.lead else 'None'}")
             
