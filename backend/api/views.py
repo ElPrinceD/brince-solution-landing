@@ -200,10 +200,19 @@ def create_payment_intent(request):
             'payment_id': payment.id
         }, status=status.HTTP_201_CREATED)
         
+    except stripe.error.AuthenticationError as e:
+        logger.error(f"Stripe authentication error (expired/invalid API key): {str(e)}")
+        return Response({
+            'error': 'Payment processing is temporarily unavailable. Please contact support or try again later.'
+        }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     except stripe.error.StripeError as e:
         logger.error(f"Stripe error creating payment intent: {str(e)}")
+        error_message = str(e)
+        # Extract user-friendly error message
+        if hasattr(e, 'user_message') and e.user_message:
+            error_message = e.user_message
         return Response({
-            'error': str(e)
+            'error': error_message
         }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         logger.error(f"Error creating payment intent: {str(e)}", exc_info=True)
