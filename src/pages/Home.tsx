@@ -7,7 +7,6 @@ import { TestimonialCard } from '../components/TestimonialCard';
 import { NewsCard } from '../components/NewsCard';
 import { LeadGenForm } from '../components/LeadGenForm';
 import { AppointmentCard } from '../components/AppointmentCard';
-import { WebinarRegistrationForm } from '../components/WebinarRegistrationForm';
 import { services, testimonials, newsPosts, brightHRPartnership, appointments } from '../utils/constants';
 
 export const Home = () => {
@@ -69,93 +68,51 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Free Webinar Announcement */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-navy-900 dark:via-navy-800 dark:to-navy-900">
+      {/* Online Appointments and Master Class */}
+      <section className="py-20 bg-gray-50 dark:bg-navy-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white dark:bg-navy-800 rounded-3xl shadow-2xl overflow-hidden"
+            className="text-center mb-12"
           >
-            <div className="grid md:grid-cols-2 gap-0">
-              {/* Left Side - Content */}
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <div className="inline-block bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-semibold mb-6 w-fit">
-                  🎓 Free Webinar
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                  How to Grow & Scale Your Business
-                </h2>
-                <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
-                  Join us for an exclusive free webinar where industry experts will share proven strategies to grow and scale your business successfully.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">📅</span>
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">Date</p>
-                      <p className="text-gray-600 dark:text-gray-400">Friday, November 21, 2025</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">⏰</span>
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">Time</p>
-                      <p className="text-gray-600 dark:text-gray-400">6:00 PM - 8:00 PM GMT</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">💻</span>
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">Format</p>
-                      <p className="text-gray-600 dark:text-gray-400">Online - Join from anywhere</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-6 mb-8">
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3">What You'll Learn:</h3>
-                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                    <li className="flex items-start">
-                      <span className="text-primary-500 mr-2">✓</span>
-                      <span>Proven strategies for business growth</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary-500 mr-2">✓</span>
-                      <span>Scaling techniques that actually work</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary-500 mr-2">✓</span>
-                      <span>Common pitfalls to avoid</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary-500 mr-2">✓</span>
-                      <span>Q&A session with industry experts</span>
-                    </li>
-                  </ul>
-                </div>
-                <WebinarRegistrationForm />
-              </div>
-              {/* Right Side - Visual */}
-              <div className="bg-gradient-to-br from-primary-500 to-primary-700 p-8 md:p-12 flex items-center justify-center relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop"
-                  alt="Business Growth Webinar"
-                  className="absolute inset-0 w-full h-full object-cover opacity-20"
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/90 to-primary-700/90"></div>
-                <div className="relative z-10 text-center text-white">
-                  <div className="text-8xl mb-6">🎯</div>
-                  <h3 className="text-3xl font-bold mb-4">Free Business Growth Webinar</h3>
-                  <p className="text-xl text-white/90 mb-6">Limited Seats Available</p>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6">
-                    <p className="text-2xl font-bold mb-2">100% Free</p>
-                    <p className="text-white/90">No hidden costs, no commitments</p>
-                  </div>
-                </div>
-              </div>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Online Appointments and Master Class
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
+              (GMT+00:00) Edinburgh, London
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <span className="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-lg font-semibold">
+                All Services
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                Business consultancy
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                Ai Business Conference
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                General Consultation
+              </span>
+              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                Business Setup Consultation
+              </span>
             </div>
           </motion.div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {appointments.map((appointment, index) => (
+              <AppointmentCard
+                key={appointment.id}
+                id={appointment.id}
+                title={appointment.title}
+                duration={appointment.duration}
+                price={appointment.price}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -247,51 +204,6 @@ export const Home = () => {
             <StatisticCounter value={50} suffix="+" label="Projects Delivered" />
             <StatisticCounter value={100} suffix="+" label="Happy Clients" />
             <StatisticCounter value={25} suffix="+" label="Team Members" />
-          </div>
-        </div>
-      </section>
-
-      {/* Online Appointments and Master Class */}
-      <section className="py-20 bg-gray-50 dark:bg-navy-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Online Appointments and Master Class
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-              (GMT+00:00) Edinburgh, London
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <span className="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-lg font-semibold">
-                All Services
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                Business consultancy
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                Ai Business Conference
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                General Consultation
-              </span>
-            </div>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {appointments.map((appointment, index) => (
-              <AppointmentCard
-                key={appointment.id}
-                id={appointment.id}
-                title={appointment.title}
-                duration={appointment.duration}
-                price={appointment.price}
-                delay={index * 0.1}
-              />
-            ))}
           </div>
         </div>
       </section>

@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { services, appointments } from '../utils/constants';
-import { AppointmentCard } from '../components/AppointmentCard';
+import { services } from '../utils/constants';
 
 const serviceImages = [
   'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop',
@@ -169,50 +168,6 @@ export const Services = () => {
         </div>
       </section>
 
-      {/* Appointment Booking */}
-      <section className="py-20 bg-gray-50 dark:bg-navy-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Online Appointments and Master Class
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-              (GMT+00:00) Edinburgh, London
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <span className="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-lg font-semibold">
-                All Services
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                Business consultancy
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                Ai Business Conference
-              </span>
-              <span className="px-4 py-2 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 rounded-lg">
-                General Consultation
-              </span>
-            </div>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {appointments.map((appointment, index) => (
-              <AppointmentCard
-                key={appointment.id}
-                id={appointment.id}
-                title={appointment.title}
-                duration={appointment.duration}
-                price={appointment.price}
-                delay={index * 0.1}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
