@@ -63,3 +63,35 @@ export const submitLead = async (data: LeadSubmissionData) => {
   return response.json();
 };
 
+export interface TrainingInquiryData {
+  name: string;
+  phone: string;
+  email: string;
+  placeOfWork: string;
+}
+
+export const submitTrainingInquiry = async (data: TrainingInquiryData) => {
+  const response = await fetch(`${API_BASE_URL}/training-inquiry/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const error = await response.json();
+      throw new Error(error.error || error.message || 'Failed to submit training inquiry');
+    } else {
+      // If not JSON, it's likely an HTML error page
+      await response.text(); // Consume the response body
+      throw new Error(`Server error (${response.status}): ${response.statusText}`);
+    }
+  }
+
+  return response.json();
+};
+

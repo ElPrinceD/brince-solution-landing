@@ -470,3 +470,92 @@ Application submitted at: {timezone.now()}
             'error': 'An error occurred while processing your application'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['POST'])
+def submit_training_inquiry(request):
+    """Handle Health and Social Care Training Level 3 inquiry submission"""
+    logger.info(f"Received training inquiry submission: {request.data}")
+    
+    try:
+        # Extract form data
+        name = request.data.get('name', '').strip()
+        phone = request.data.get('phone', '').strip()
+        email = request.data.get('email', '').strip()
+        place_of_work = request.data.get('placeOfWork', '').strip()
+        
+        # Validate required fields
+        if not name or not phone or not email or not place_of_work:
+            return Response(
+                {'error': 'All fields are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate email format
+        import re
+        email_pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+        if not re.match(email_pattern, email):
+            return Response(
+                {'error': 'Invalid email address'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Create email message
+        subject = f'New Training Inquiry: Health and Social Care Training Level 3 (NVQ Level 3) - {name}'
+        
+        message = f"""New Training Inquiry Received
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TRAINING COURSE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Health and Social Care Training Level 3 (NVQ Level 3)
+Price: £1200
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INQUIRY DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Full Name: {name}
+- Email: {email}
+- Phone: {phone}
+- Place of Work: {place_of_work}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Submitted: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+Best regards,
+Brince Solutions System
+"""
+        
+        # Send email to office@brincesolutions.com
+        try:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=['office@brincesolutions.com'],
+                fail_silently=False,
+            )
+            logger.info(f"Training inquiry email sent to office@brincesolutions.com for {name} ({email})")
+        except Exception as e:
+            logger.error(f"Failed to send training inquiry email: {str(e)}")
+            return Response(
+                {'error': 'Failed to send inquiry. Please try again later.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        return Response(
+            {'message': 'Training inquiry submitted successfully'},
+            status=status.HTTP_200_OK
+        )
+        
+    except Exception as e:
+        logger.error(f"Error processing training inquiry: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': 'An error occurred while processing your inquiry. Please try again.'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
