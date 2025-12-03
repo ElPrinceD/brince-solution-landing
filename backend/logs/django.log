@@ -203,3 +203,5 @@ INFO 2025-11-12 23:59:29,012 autoreload /Users/prince/Desktop/projects/brinces/b
 INFO 2025-11-12 23:59:29,165 autoreload Watching for file changes with StatReloader
 INFO 2025-11-12 23:59:44,502 autoreload /Users/prince/Desktop/projects/brinces/brince_landing_page/backend/brince_backend/settings.py changed, reloading.
 INFO 2025-11-12 23:59:44,929 autoreload Watching for file changes with StatReloader
+
+

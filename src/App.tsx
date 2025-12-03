@@ -11,6 +11,7 @@ import { News } from './pages/News';
 import { BrightHR } from './pages/BrightHR';
 import { Departments } from './pages/Departments';
 import { Careers } from './pages/Careers';
+import { Training } from './pages/Training';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/brighthr" element={<BrightHR />} />
               <Route path="/departments" element={<Departments />} />
               <Route path="/careers" element={<Careers />} />
+              <Route path="/training" element={<Training />} />
             </Routes>
           </main>
           <Footer />

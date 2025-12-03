@@ -39,6 +39,7 @@ export const Navbar = () => {
     { path: '/', label: 'Home' },
     { path: '/brighthr', label: 'BRIGHTHR' },
     { path: '/services', label: 'Our Services' },
+    { path: '/training', label: 'Training' },
     { path: '/about', label: 'About Us' },
     { path: '/departments', label: 'Departments' },
     { path: '/careers', label: 'Careers' },
